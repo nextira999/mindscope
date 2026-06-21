@@ -2,3 +2,5 @@
 Ai로 만든 종합 심리 테스트.
 
 오직 참고 용도로만 사용하세요.
+
+https://nextira999.github.io/mindscope/
