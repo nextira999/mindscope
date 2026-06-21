@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>MindScope — 종합 심리 테스트</title>
+  <meta name="description" content="23가지 심리 지표를 한 번에 측정하는 종합 심리 자가 검사. AI 분석 지원."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --font:'Inter','Noto Sans KR',system-ui,sans-serif;
+      --r1:8px;--r2:14px;--r3:20px;--r4:28px;
+      --sh1:0 2px 8px rgba(0,0,0,.08);
+      --sh2:0 4px 24px rgba(0,0,0,.12);
+      --sh3:0 8px 48px rgba(0,0,0,.18);
+      --tr:.22s cubic-bezier(.4,0,.2,1);
+      --bg:#f4f6fb;--card:#fff;--card2:#f9faff;--inp:#eef0f8;
+      --tx:#111827;--tx2:#4b5563;--txm:#9ca3af;--bd:#e5e7ef;
+      --acc:#6c63ff;--acs:#ede9ff;--acd:#4f46e5;
+      --gg:#dcfce7;--gc:#15803d;
+      --wg:#dbeafe;--wc:#1d4ed8;
+      --cg:#fef9c3;--cc:#a16207;
+      --dg:#ffedd5;--dc:#c2410c;
+      --eg:#fee2e2;--ec:#b91c1c;
+      --crisis:#fff0f0;--crisis-bd:#fca5a5;--crisis-tx:#991b1b;
+    }
+    [data-theme=dark]{
+      --bg:#0d0f18;--card:#161929;--card2:#1d2035;--inp:#252845;
+      --tx:#f1f5f9;--tx2:#94a3b8;--txm:#64748b;--bd:#2d3153;
+      --acc:#7c74ff;--acs:#2a2660;--acd:#6c63ff;
+      --gg:#14532d;--gc:#4ade80;
+      --wg:#1e3a5f;--wc:#60a5fa;
+      --cg:#422006;--cc:#facc15;
+      --dg:#431407;--dc:#fb923c;
+      --eg:#450a0a;--ec:#f87171;
+      --crisis:#3b0000;--crisis-bd:#991b1b;--crisis-tx:#fca5a5;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--tx);min-height:100vh;transition:background var(--tr),color var(--tr);line-height:1.6}
+    button{cursor:pointer;font-family:inherit;border:none;background:none}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:999px}::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+    .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+    /* HEADER */
+    header{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--bd);backdrop-filter:blur(16px)}
+    .hdr{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 20px}
+    .logo{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(135deg,var(--acc),#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hctrls{display:flex;gap:6px;align-items:center}
+    .ai-badge{display:none;align-items:center;gap:5px;background:linear-gradient(135deg,var(--acc),#a78bfa);color:#fff;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:700}
+    .ai-badge.on{display:flex}
+    .ico-btn{width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--bd);background:var(--inp);color:var(--tx2);display:flex;align-items:center;justify-content:center;font-size:.88rem;transition:all var(--tr)}
+    .ico-btn:hover{background:var(--acs);color:var(--acc);transform:scale(1.05)}
+    .drop-wrap{position:relative}
+    .drop-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:5px;min-width:130px;box-shadow:var(--sh2);display:none;z-index:200}
+    .drop-menu.open{display:block;animation:fadeUp .15s ease}
+    .drop-menu button{width:100%;text-align:left;padding:7px 11px;border-radius:var(--r1);font-size:.84rem;color:var(--tx2);transition:all var(--tr);display:flex;align-items:center;gap:7px}
+    .drop-menu button:hover{background:var(--acs);color:var(--acc)}
+    .drop-menu button.active{color:var(--acc);font-weight:700}
+    /* PAGES */
+    .page{display:none;animation:fadeUp .28s ease}
+    .page.active{display:block}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    /* BUTTONS */
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;font-weight:700;font-size:.95rem;padding:14px 36px;border-radius:var(--r3);box-shadow:0 4px 20px rgba(108,99,255,.35);transition:all var(--tr);letter-spacing:-.01em}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(108,99,255,.45)}
+    .btn-primary:disabled{opacity:.45;pointer-events:none}
+    .btn-sec{display:inline-flex;align-items:center;gap:6px;padding:12px 28px;border-radius:var(--r2);border:2px solid var(--bd);color:var(--tx2);font-weight:600;font-size:.9rem;background:var(--card2);transition:all var(--tr)}
+    .btn-sec:hover{border-color:var(--acc);color:var(--acc);background:var(--acs)}
+    /* HOME */
+    .hero{padding:72px 24px 40px;text-align:center}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--acs);color:var(--acc);padding:5px 13px;border-radius:999px;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:18px}
+    .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+    h1.hero-title{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;letter-spacing:-.04em;line-height:1.15;margin-bottom:14px}
+    h1.hero-title span{background:linear-gradient(135deg,var(--acc),#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1rem;color:var(--tx2);max-width:500px;margin:0 auto 28px}
+    .disclaimer{background:linear-gradient(135deg,#fef9c3,#fef3c7);border:1px solid #fcd34d;border-radius:var(--r2);padding:14px 18px;margin:0 auto 32px;max-width:680px;display:flex;gap:10px;align-items:flex-start}
+    [data-theme=dark] .disclaimer{background:linear-gradient(135deg,#422006,#431407);border-color:#854d0e}
+    .disclaimer p{font-size:.83rem;color:var(--tx2);line-height:1.7}
+    .disclaimer strong{color:var(--tx)}
+    .count-sec{text-align:center;margin-bottom:36px}
+    .count-sec h2{font-size:1rem;font-weight:600;color:var(--tx2);margin-bottom:14px}
+    .count-grid{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+    .cnt-btn{width:66px;height:66px;border-radius:var(--r2);border:2px solid var(--bd);background:var(--card);color:var(--tx);font-size:.95rem;font-weight:700;transition:all var(--tr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+    .cnt-btn span{font-size:.58rem;font-weight:400;color:var(--txm)}
+    .cnt-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--acs);transform:translateY(-2px)}
+    .cnt-btn.sel{border-color:var(--acc);background:var(--acc);color:#fff}
+    .cnt-btn.sel span{color:rgba(255,255,255,.7)}
+    .feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-top:28px}
+    .feat-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r3);padding:20px 16px;transition:all var(--tr)}
+    .feat-card:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+    .feat-card .icon{font-size:1.8rem;margin-bottom:10px}
+    .feat-card h3{font-size:.88rem;font-weight:700;margin-bottom:4px}
+    .feat-card p{font-size:.75rem;color:var(--txm);line-height:1.55}
+    .sec-title{text-align:center;font-size:1.4rem;font-weight:800;letter-spacing:-.03em}
+    .sec-sub{text-align:center;font-size:.85rem;color:var(--txm);margin-top:6px}
+    /* AI SETUP PAGE */
+    .ai-setup-page{padding:40px 24px 80px}
+    .ai-setup-hdr{text-align:center;margin-bottom:28px}
+    .ai-setup-hdr .big-icon{font-size:3rem;margin-bottom:10px}
+    .ai-setup-hdr h2{font-size:1.7rem;font-weight:800;letter-spacing:-.04em;margin-bottom:6px}
+    .ai-setup-hdr p{color:var(--txm);font-size:.88rem}
+    .ai-section{margin-bottom:24px}
+    .ai-section h3{font-size:.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .ai-section h3 .step-num{width:24px;height:24px;border-radius:50%;background:var(--acc);color:#fff;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .platform-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media(min-width:500px){.platform-grid{grid-template-columns:repeat(4,1fr)}}
+    .plat-btn{border:2px solid var(--bd);border-radius:var(--r2);background:var(--card2);padding:14px 10px;text-align:center;transition:all var(--tr)}
+    .plat-btn:hover{border-color:var(--acc);background:var(--acs)}
+    .plat-btn.active{border-color:var(--acc);background:var(--acc);color:#fff}
+    .plat-btn .plat-icon{font-size:1.5rem;display:block;margin-bottom:6px}
+    .plat-btn .plat-name{font-size:.75rem;font-weight:700}
+    .plat-btn .plat-free{font-size:.65rem;color:var(--gc);font-weight:600;margin-top:2px;display:block}
+    .plat-btn.active .plat-free{color:rgba(255,255,255,.8)}
+    .api-key-wrap{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+    .api-key-inp{flex:1;padding:12px 14px;border:2px solid var(--bd);border-radius:var(--r2);background:var(--inp);color:var(--tx);font-size:.9rem;font-family:inherit;outline:none;transition:border-color var(--tr)}
+    .api-key-inp:focus{border-color:var(--acc)}
+    .api-key-inp::placeholder{color:var(--txm)}
+    .vis-btn{width:40px;height:40px;border-radius:var(--r1);border:2px solid var(--bd);background:var(--inp);color:var(--tx2);flex-shrink:0;transition:all var(--tr)}
+    .vis-btn:hover{border-color:var(--acc);color:var(--acc)}
+    .key-guide{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--acc);font-weight:600;cursor:pointer;text-decoration:none;transition:opacity var(--tr)}
+    .key-guide:hover{opacity:.7}
+    .model-sel{width:100%;padding:11px 14px;border:2px solid var(--bd);border-radius:var(--r2);background:var(--inp);color:var(--tx);font-size:.9rem;font-family:inherit;outline:none;cursor:pointer;transition:border-color var(--tr)}
+    .model-sel:focus{border-color:var(--acc)}
+    .ai-notice{background:var(--card2);border:1px solid var(--bd);border-radius:var(--r2);padding:12px 16px;font-size:.78rem;color:var(--txm);line-height:1.65;margin-bottom:16px}
+    .ai-notice strong{color:var(--dc)}
+    .ai-actions{display:flex;gap:10px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+    .hidden-section{display:none}
+    /* TEST PAGE */
+    .test-page{padding:28px 20px}
+    .prog-wrap{background:var(--inp);border-radius:999px;height:7px;margin-bottom:7px;overflow:hidden}
+    .prog-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--acc),#a78bfa);transition:width .4s cubic-bezier(.4,0,.2,1)}
+    .prog-info{display:flex;justify-content:space-between;font-size:.78rem;color:var(--txm);margin-bottom:28px}
+    .prog-info strong{color:var(--acc)}
+    .q-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r4);padding:32px 28px;box-shadow:var(--sh1);animation:fadeUp .28s ease}
+    .q-num{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .q-num::before,.q-num::after{content:'';flex:1;height:1px;background:var(--bd)}
+    .q-text{font-size:1.15rem;font-weight:600;text-align:center;line-height:1.65;margin-bottom:32px;letter-spacing:-.02em}
+    .likert{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+    .lk-btn{flex:1;min-width:70px;max-width:130px;padding:13px 6px;border:2px solid var(--bd);border-radius:var(--r2);background:var(--card2);color:var(--tx2);font-size:.78rem;font-weight:500;text-align:center;transition:all var(--tr);line-height:1.35}
+    .lk-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--acs);transform:translateY(-2px)}
+    .lk-btn.sel{border-color:var(--acc);background:var(--acc);color:#fff;transform:translateY(-2px);box-shadow:0 4px 14px rgba(108,99,255,.35)}
+    .lk-labels{display:flex;justify-content:space-between;font-size:.7rem;color:var(--txm);padding:0 4px}
+    .q-nav{display:flex;gap:10px;margin-top:24px}
+    .btn-prev{flex:1;padding:13px;border-radius:var(--r2);border:2px solid var(--bd);color:var(--tx2);font-weight:600;font-size:.88rem;background:var(--card2);transition:all var(--tr)}
+    .btn-prev:hover{border-color:var(--acc);color:var(--acc);background:var(--acs)}
+    .btn-prev:disabled{opacity:.35;pointer-events:none}
+    .btn-next{flex:2;padding:13px;border-radius:var(--r2);background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;font-weight:700;font-size:.92rem;transition:all var(--tr)}
+    .btn-next:hover{opacity:.9;transform:translateY(-1px)}
+    .btn-next:disabled{opacity:.35;pointer-events:none}
+    /* RESULTS */
+    .res-page{padding:36px 20px 80px}
+    .res-hdr{text-align:center;margin-bottom:28px}
+    .res-hdr h2{font-size:1.8rem;font-weight:800;letter-spacing:-.04em;margin-bottom:6px}
+    .res-hdr p{color:var(--txm);font-size:.87rem}
+    /* Crisis Alert */
+    .crisis-box{background:var(--crisis);border:2px solid var(--crisis-bd);border-radius:var(--r2);padding:18px 20px;margin-bottom:24px;animation:fadeUp .3s ease}
+    .crisis-box h3{color:var(--crisis-tx);font-size:1rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .crisis-box p{color:var(--crisis-tx);font-size:.82rem;line-height:1.65;margin-bottom:10px}
+    .crisis-lines{display:flex;flex-wrap:wrap;gap:8px}
+    .crisis-line{background:var(--crisis-bd);color:var(--crisis-tx);padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+    /* Tabs */
+    .tab-bar{display:flex;gap:0;border-bottom:2px solid var(--bd);margin-bottom:20px}
+    .tab-btn{padding:10px 20px;font-size:.88rem;font-weight:600;color:var(--txm);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all var(--tr)}
+    .tab-btn:hover{color:var(--acc)}
+    .tab-btn.active{color:var(--acc);border-bottom-color:var(--acc)}
+    .tab-content{display:none}
+    .tab-content.active{display:block;animation:fadeUp .25s ease}
+    .res-disclaimer{background:var(--card2);border:1px solid var(--bd);border-radius:var(--r2);padding:12px 16px;font-size:.78rem;color:var(--txm);text-align:center;margin-bottom:28px;line-height:1.65}
+    /* Grade groups */
+    .grade-grp{margin-bottom:28px}
+    .grade-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .grade-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;font-size:.78rem;font-weight:700;flex-shrink:0}
+    .bdot{width:6px;height:6px;border-radius:50%}
+    .g-good{background:var(--gg);color:var(--gc)}.g-good .bdot{background:var(--gc)}
+    .g-watch{background:var(--wg);color:var(--wc)}.g-watch .bdot{background:var(--wc)}
+    .g-caution{background:var(--cg);color:var(--cc)}.g-caution .bdot{background:var(--cc)}
+    .g-danger{background:var(--dg);color:var(--dc)}.g-danger .bdot{background:var(--dc)}
+    .g-critical{background:var(--eg);color:var(--ec)}.g-critical .bdot{background:var(--ec)}
+    .grade-line{flex:1;height:1px;background:var(--bd)}
+    .res-items{display:flex;flex-direction:column;gap:9px}
+    .res-item{background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:14px 18px;cursor:pointer;transition:all var(--tr);position:relative;overflow:hidden}
+    .res-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+    .ri-good::before{background:var(--gc)}.ri-watch::before{background:var(--wc)}.ri-caution::before{background:var(--cc)}.ri-danger::before{background:var(--dc)}.ri-critical::before{background:var(--ec)}
+    .res-item:hover{transform:translateX(4px);box-shadow:var(--sh1)}
+    .ri-row{display:flex;align-items:center;gap:10px}
+    .ri-name{font-weight:600;font-size:.92rem;flex:1}
+    .ri-pct{font-size:1.05rem;font-weight:800;letter-spacing:-.03em}
+    .ri-good .ri-pct{color:var(--gc)}.ri-watch .ri-pct{color:var(--wc)}.ri-caution .ri-pct{color:var(--cc)}.ri-danger .ri-pct{color:var(--dc)}.ri-critical .ri-pct{color:var(--ec)}
+    .ri-bar{height:5px;background:var(--inp);border-radius:999px;margin-top:9px;overflow:hidden}
+    .ri-fill{height:100%;border-radius:999px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+    .ri-good .ri-fill{background:var(--gc)}.ri-watch .ri-fill{background:var(--wc)}.ri-caution .ri-fill{background:var(--cc)}.ri-danger .ri-fill{background:var(--dc)}.ri-critical .ri-fill{background:var(--ec)}
+    .ri-expand{font-size:.8rem;color:var(--txm);margin-top:10px;line-height:1.7;display:none;border-top:1px solid var(--bd);padding-top:10px}
+    .ri-expand.open{display:block;animation:fadeUp .2s ease}
+    .ri-expand .advice{background:var(--card2);border-radius:var(--r1);padding:9px 12px;margin-top:8px;font-size:.77rem}
+    .exp-icon{font-size:.75rem;color:var(--txm);transition:transform var(--tr)}
+    .res-item.expanded .exp-icon{transform:rotate(180deg)}
+    /* AI Analysis Tab */
+    .ai-tab-empty{text-align:center;padding:48px 24px;color:var(--txm)}
+    .ai-tab-empty .big{font-size:3rem;margin-bottom:12px}
+    .ai-tab-empty p{font-size:.88rem;line-height:1.7;margin-bottom:20px}
+    .ai-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:48px}
+    .ai-spinner{width:36px;height:36px;border-radius:50%;border:3px solid var(--bd);border-top-color:var(--acc);animation:spin .8s linear infinite}
+    .ai-result-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r3);padding:24px 22px;margin-bottom:16px}
+    .ai-result-card h3{font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--acc)}
+    .ai-content{font-size:.86rem;color:var(--tx2);line-height:1.8}
+    .ai-content h4{font-size:.92rem;font-weight:700;margin:14px 0 6px;color:var(--tx)}
+    .ai-content strong{color:var(--tx)}
+    .ai-content ul{padding-left:16px}
+    .ai-content li{margin:4px 0}
+    .ai-content p{margin-bottom:10px}
+    /* AI Evaluation Section */
+    .ai-eval-section{margin-top:32px}
+    .ai-eval-btn{width:100%;padding:16px;border-radius:var(--r2);background:linear-gradient(135deg,#7c3aed,#a21caf);color:#fff;font-weight:700;font-size:.95rem;display:flex;align-items:center;justify-content:center;gap:10px;transition:all var(--tr);border:none;cursor:pointer}
+    .ai-eval-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,.4)}
+    .ai-eval-btn:disabled{opacity:.45;pointer-events:none}
+    .ai-eval-result{margin-top:16px;background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(162,28,175,.06));border:1px solid rgba(124,58,237,.2);border-radius:var(--r3);padding:22px 20px;display:none}
+    .ai-eval-result.show{display:block;animation:fadeUp .3s ease}
+    /* Results Actions */
+    .res-actions{text-align:center;margin-top:40px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    /* Loading */
+    .load-overlay{position:fixed;inset:0;z-index:400;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .4s ease}
+    .load-overlay.hidden{opacity:0;pointer-events:none}
+    .spinner{width:48px;height:48px;border-radius:50%;border:4px solid var(--bd);border-top-color:var(--acc);animation:spin .8s linear infinite}
+    .load-txt{font-size:.95rem;color:var(--txm);font-weight:500}
+    /* Key Guide Modal */
+    .modal-ov{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity var(--tr)}
+    .modal-ov.open{opacity:1;pointer-events:auto}
+    .modal{background:var(--card);border:1px solid var(--bd);border-radius:var(--r4);padding:32px 28px;max-width:500px;width:100%;box-shadow:var(--sh3);transform:translateY(18px);transition:transform var(--tr)}
+    .modal-ov.open .modal{transform:translateY(0)}
+    .modal h3{font-size:1.2rem;font-weight:800;margin-bottom:14px}
+    .guide-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+    .guide-step{background:var(--card2);border:1px solid var(--bd);border-radius:var(--r2);padding:12px 14px}
+    .guide-step h4{font-size:.85rem;font-weight:700;margin-bottom:4px}
+    .guide-step p{font-size:.78rem;color:var(--tx2);line-height:1.6}
+    .guide-step a{color:var(--acc);font-weight:600}
+    .modal-close{width:100%;padding:11px;border-radius:var(--r2);border:2px solid var(--bd);color:var(--tx2);font-weight:600;background:var(--card2);transition:all var(--tr);margin-top:4px}
+    .modal-close:hover{border-color:var(--acc);color:var(--acc);background:var(--acs)}
+    /* Features section */
+    .features{padding:0 20px 72px}
+    /* Responsive */
+    @media(max-width:580px){
+      .q-card{padding:22px 16px}.likert{gap:5px}.lk-btn{min-width:56px;padding:10px 3px;font-size:.72rem}
+      .hero{padding:48px 16px 28px}.q-text{font-size:.98rem}
+      .btn-primary{padding:13px 24px}.hdr{padding:0 14px}
+      .platform-grid{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+<!-- LOADING -->
+<div class="load-overlay" id="loadOv"><div class="spinner"></div><div class="load-txt" id="loadTxt">잠시만 기다려 주세요...</div></div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <div class="logo">MindScope</div>
+    <div class="hctrls">
+      <div class="ai-badge" id="aiBadge">🤖 <span id="aiBadgeTxt">AI</span></div>
+      <div class="drop-wrap">
+        <button class="ico-btn" id="langBtn" aria-label="언어">🌐</button>
+        <div class="drop-menu" id="langMenu">
+          <button onclick="setLang('ko')" id="lang-ko" class="active">🇰🇷 한국어</button>
+          <button onclick="setLang('en')" id="lang-en">🇺🇸 English</button>
+          <button onclick="setLang('ja')" id="lang-ja">🇯🇵 日本語</button>
+          <button onclick="setLang('zh')" id="lang-zh">🇨🇳 中文</button>
+        </div>
+      </div>
+      <div class="drop-wrap">
+        <button class="ico-btn" id="themeBtn" aria-label="테마">🎨</button>
+        <div class="drop-menu" id="themeMenu">
+          <button onclick="setTheme('auto')" id="theme-auto" class="active">⚙️ <span data-i18n="th_auto">시스템</span></button>
+          <button onclick="setTheme('light')" id="theme-light">☀️ <span data-i18n="th_light">라이트</span></button>
+          <button onclick="setTheme('dark')" id="theme-dark">🌙 <span data-i18n="th_dark">다크</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE: HOME -->
+<div class="page active" id="page-home">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-badge"><div class="dot"></div><span data-i18n="hero_badge">종합 심리 자가검사</span></div>
+      <h1 class="hero-title" data-i18n="hero_title">당신의 마음 속을 <span>들여다보세요</span></h1>
+      <p class="hero-sub" data-i18n="hero_desc">23가지 심리·정신건강 지표를 한 번에 측정합니다. 전문 진단이 아닌 자기 이해를 위한 참고 자료로 활용하세요.</p>
+    </div>
+    <div class="disclaimer">
+      <span style="font-size:1.3rem;flex-shrink:0;line-height:1.4">⚠️</span>
+      <p><strong data-i18n="disc_title">중요 안내:</strong> <span data-i18n="disc_body">이 검사는 임상 진단 도구가 아닌 자기 인식 참고 자료입니다. 심각한 증상이 의심되면 정신건강 전문가에게 상담하세요. 결과는 기기 내에서만 처리되며 외부로 전송되지 않습니다.</span></p>
+    </div>
+    <div class="count-sec">
+      <h2 data-i18n="cnt_title">검사할 문항 수를 선택하세요</h2>
+      <div class="count-grid" id="cntGrid"></div>
+    </div>
+    <div style="text-align:center;margin-bottom:56px">
+      <button class="btn-primary" id="startBtn" onclick="goToAiSetup()" disabled>✨ <span data-i18n="start_btn">검사 시작하기</span></button>
+    </div>
+    <div class="features">
+      <div class="sec-title" data-i18n="feat_title">무엇을 검사하나요?</div>
+      <div class="sec-sub" data-i18n="feat_sub">23가지 심리·정신건강 지표</div>
+      <div class="feat-grid" id="featGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: AI SETUP -->
+<div class="page" id="page-ai-setup">
+  <div class="wrap ai-setup-page">
+    <div class="ai-setup-hdr">
+      <div class="big-icon">🤖</div>
+      <h2 data-i18n="ai_title">AI 기능 설정</h2>
+      <p data-i18n="ai_sub">선택 사항 — 건너뛸 수 있습니다</p>
+    </div>
+    <!-- Privacy Notice -->
+    <div class="ai-notice">
+      🔐 <strong data-i18n="ai_priv_warn">⚠️ 개인정보 유의사항:</strong> <span data-i18n="ai_priv_body">AI 기능 사용 시 검사 결과 수치가 선택한 AI 플랫폼 서버로 전송됩니다. API 키는 브라우저 세션 중에만 임시 보관되며 탭을 닫으면 즉시 삭제됩니다. 개인 식별 정보는 전송되지 않습니다.</span>
+    </div>
+    <!-- Platform -->
+    <div class="ai-section">
+      <h3><span class="step-num">1</span> <span data-i18n="ai_plat_title">AI 플랫폼 선택</span></h3>
+      <div class="platform-grid" id="platGrid"></div>
+    </div>
+    <!-- API Key -->
+    <div class="ai-section hidden-section" id="keySection">
+      <h3><span class="step-num">2</span> <span data-i18n="ai_key_title">API 키 입력</span></h3>
+      <div class="api-key-wrap">
+        <input type="password" class="api-key-inp" id="apiKeyInp" data-i18n-ph="ai_key_ph" placeholder="API 키를 입력하세요"/>
+        <button class="vis-btn" id="visBtn" onclick="toggleVis()">👁</button>
+      </div>
+      <a href="#" class="key-guide" id="keyGuideLink" onclick="showKeyGuide();return false">📋 <span data-i18n="ai_key_guide">API 키 받는 방법</span></a>
+    </div>
+    <!-- Model -->
+    <div class="ai-section hidden-section" id="modelSection">
+      <h3><span class="step-num">3</span> <span data-i18n="ai_model_title">모델 선택</span></h3>
+      <select class="model-sel" id="modelSel" onchange="onModelChange()"></select>
+      <p style="font-size:.75rem;color:var(--txm);margin-top:8px" id="modelDesc"></p>
+    </div>
+    <div class="ai-actions">
+      <button class="btn-sec" onclick="skipAI()">⏭ <span data-i18n="ai_skip">AI 없이 계속</span></button>
+      <button class="btn-primary" id="aiConfirmBtn" onclick="confirmAI()">🤖 <span data-i18n="ai_confirm">AI 기능 활성화</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: TEST -->
+<div class="page" id="page-test">
+  <div class="wrap test-page">
+    <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-info"><span id="progTxt"></span><strong id="progPct">0%</strong></div>
+    <div class="q-card" id="qCard">
+      <div class="q-num" id="qNum"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="likert" id="likert"></div>
+      <div class="lk-labels"><span data-i18n="sc1">매우 그렇지 않다</span><span data-i18n="sc5">매우 그렇다</span></div>
+      <div class="q-nav">
+        <button class="btn-prev" id="prevBtn" onclick="prevQ()">← <span data-i18n="prev">이전</span></button>
+        <button class="btn-next" id="nextBtn" onclick="nextQ()" disabled><span id="nextTxt" data-i18n="next">다음</span> →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: RESULTS -->
+<div class="page" id="page-results">
+  <div class="wrap res-page">
+    <div class="res-hdr">
+      <h2 data-i18n="res_title">🔍 검사 결과</h2>
+      <p data-i18n="res_sub">항목을 클릭하면 상세 설명이 펼쳐집니다</p>
+    </div>
+    <!-- Crisis Alert -->
+    <div class="crisis-box" id="crisisBox" style="display:none">
+      <h3>🆘 <span data-i18n="crisis_title">위기 지원 — 즉시 연락하세요</span></h3>
+      <p data-i18n="crisis_body">자살·자해 관련 수치가 높게 나왔습니다. 아래 기관에 즉시 연락하거나 가까운 응급실을 방문하세요.</p>
+      <div class="crisis-lines">
+        <span class="crisis-line">🇰🇷 자살예방 1393</span>
+        <span class="crisis-line">🇰🇷 생명의전화 1588-9191</span>
+        <span class="crisis-line">🌍 Crisis Text Line: HOME → 741741</span>
+        <span class="crisis-line">🌍 Samaritans: 116 123</span>
+        <span class="crisis-line">🇯🇵 よりそいホットライン: 0120-279-338</span>
+      </div>
+    </div>
+    <!-- Tabs (shown only if AI configured) -->
+    <div id="tabBar" style="display:none">
+      <div class="tab-bar">
+        <button class="tab-btn active" id="tab-numeric" onclick="switchTab('numeric')" data-i18n="tab_numeric">수치 결과</button>
+        <button class="tab-btn" id="tab-ai" onclick="switchTab('ai')" data-i18n="tab_ai">🤖 AI 진단</button>
+      </div>
+    </div>
+    <!-- Numeric Tab -->
+    <div class="tab-content active" id="tc-numeric">
+      <div class="res-disclaimer" data-i18n="res_disc">※ 자기 보고식 심리 참고 검사입니다. 임상 진단을 대체하지 않습니다.</div>
+      <div id="resCont"></div>
+    </div>
+    <!-- AI Tab -->
+    <div class="tab-content" id="tc-ai">
+      <div id="aiDiagCont">
+        <div class="ai-loading" id="aiLoading">
+          <div class="ai-spinner"></div>
+          <p style="color:var(--txm);font-size:.88rem" data-i18n="ai_analyzing">AI가 결과를 분석하는 중...</p>
+        </div>
+      </div>
+      <!-- AI Evaluation -->
+      <div class="ai-eval-section" id="aiEvalSection" style="display:none">
+        <button class="ai-eval-btn" id="aiEvalBtn" onclick="requestAIEval()">
+          ✨ <span data-i18n="ai_eval_btn">AI 종합 평가 요청</span>
+        </button>
+        <div class="ai-eval-result" id="aiEvalResult">
+          <div class="ai-result-card">
+            <h3>📋 <span data-i18n="ai_eval_title">AI 종합 평가 · 개선 가이드</span></h3>
+            <div class="ai-content" id="aiEvalContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="res-actions">
+      <button class="btn-sec" onclick="goHome()">🏠 <span data-i18n="go_home">처음으로</span></button>
+      <button class="btn-primary" onclick="retake()">🔄 <span data-i18n="retake">다시 검사</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- KEY GUIDE MODAL -->
+<div class="modal-ov" id="modalOv" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <h3 id="modalTitle">API 키 받는 방법</h3>
+    <div class="guide-steps" id="guideSteps"></div>
+    <button class="modal-close" onclick="closeModal()">닫기</button>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   I18N
+================================================================ */
+const i18n={
+  ko:{
+    hero_badge:'종합 심리 자가검사',hero_title:'당신의 마음 속을 <span>들여다보세요</span>',
+    hero_desc:'23가지 심리·정신건강 지표를 한 번에 측정합니다. 전문 진단이 아닌 자기 이해를 위한 참고 자료로 활용하세요.',
+    disc_title:'중요 안내:',disc_body:'이 검사는 임상 진단 도구가 아닌 자기 인식 참고 자료입니다. 심각한 증상이 의심되면 정신건강 전문가에게 상담하세요. 결과는 기기 내에서만 처리됩니다.',
+    cnt_title:'검사할 문항 수를 선택하세요',start_btn:'검사 시작하기',
+    feat_title:'무엇을 검사하나요?',feat_sub:'23가지 심리·정신건강 지표',
+    sc1:'매우 그렇지 않다',sc2:'그렇지 않다',sc3:'보통',sc4:'그렇다',sc5:'매우 그렇다',
+    prev:'이전',next:'다음',submit:'결과 보기',progress_q:'문항',
+    ai_title:'AI 기능 설정',ai_sub:'선택 사항 — 건너뛸 수 있습니다',
+    ai_priv_warn:'⚠️ 개인정보 유의사항:',
+    ai_priv_body:'AI 기능 사용 시 검사 결과 수치가 선택한 AI 플랫폼 서버로 전송됩니다. API 키는 브라우저 세션 중에만 임시 보관되며 탭을 닫으면 즉시 삭제됩니다.',
+    ai_plat_title:'AI 플랫폼 선택',ai_key_title:'API 키 입력',ai_key_ph:'API 키를 입력하세요',
+    ai_key_guide:'API 키 받는 방법',ai_model_title:'모델 선택',
+    ai_skip:'AI 없이 계속',ai_confirm:'AI 기능 활성화',
+    ai_analyzing:'AI가 결과를 분석하는 중...',
+    tab_numeric:'수치 결과',tab_ai:'🤖 AI 진단',
+    res_title:'🔍 검사 결과',res_sub:'항목을 클릭하면 상세 설명이 펼쳐집니다',
+    res_disc:'※ 자기 보고식 심리 참고 검사입니다. 임상 진단을 대체하지 않습니다.',
+    crisis_title:'위기 지원 — 즉시 연락하세요',
+    crisis_body:'자살·자해 관련 수치가 높게 나왔습니다. 아래 기관에 즉시 연락하거나 가까운 응급실을 방문하세요.',
+    ai_eval_btn:'AI 종합 평가 요청',ai_eval_title:'AI 종합 평가 · 개선 가이드',
+    go_home:'처음으로',retake:'다시 검사',
+    th_auto:'시스템',th_light:'라이트',th_dark:'다크',
+    grade_good:'양호',grade_watch:'관심',grade_caution:'주의',grade_danger:'위험',grade_critical:'상담 요함',
+    min_est:'분 예상',loading:'잠시만 기다려 주세요...',analyzing:'결과를 분석하는 중...',
+    ai_diag_title:'AI 진단 분석',ai_no_diag:'AI 설정이 되어 있지 않습니다.',
+    ai_error:'AI 분석 중 오류가 발생했습니다: ',
+    ai_eval_loading:'AI가 종합 평가를 작성하는 중...',
+    guide_title:'API 키 받는 방법',modal_close:'닫기',
+    ai_not_configured:'AI 기능이 설정되지 않았습니다. 다시 검사를 시작하고 AI 설정 단계에서 API 키를 입력하세요.',
+    ai_badge_on:'ON',
+  },
+  en:{
+    hero_badge:'Comprehensive Psych Self-Test',hero_title:'Look Deep Into <span>Your Mind</span>',
+    hero_desc:'Measure 23 psychological & mental health indicators at once. Use this as a self-awareness reference, not a clinical diagnosis.',
+    disc_title:'Important Notice:',disc_body:'This is a self-awareness reference, not a clinical tool. Consult a mental health professional for serious concerns. All results are processed locally.',
+    cnt_title:'Select the number of questions',start_btn:'Start Test',
+    feat_title:'What does it measure?',feat_sub:'23 psychological & mental health indicators',
+    sc1:'Strongly Disagree',sc2:'Disagree',sc3:'Neutral',sc4:'Agree',sc5:'Strongly Agree',
+    prev:'Previous',next:'Next',submit:'See Results',progress_q:'Q',
+    ai_title:'AI Feature Setup',ai_sub:'Optional — you can skip this',
+    ai_priv_warn:'⚠️ Privacy Notice:',
+    ai_priv_body:'When using AI features, your test result scores will be sent to the selected AI platform server. API keys are temporarily stored only during the browser session and deleted when you close the tab.',
+    ai_plat_title:'Select AI Platform',ai_key_title:'Enter API Key',ai_key_ph:'Enter your API key',
+    ai_key_guide:'How to get an API key',ai_model_title:'Select Model',
+    ai_skip:'Continue without AI',ai_confirm:'Enable AI Features',
+    ai_analyzing:'AI is analyzing your results...',
+    tab_numeric:'Numeric Results',tab_ai:'🤖 AI Diagnosis',
+    res_title:'🔍 Results',res_sub:'Click an item to expand details',
+    res_disc:'※ Self-report psychological reference test. Not equivalent to clinical diagnosis.',
+    crisis_title:'Crisis Support — Contact Immediately',
+    crisis_body:'Your scores indicate elevated suicide/self-harm risk. Please contact the resources below or visit your nearest emergency room.',
+    ai_eval_btn:'Request AI Comprehensive Evaluation',ai_eval_title:'AI Comprehensive Evaluation & Guide',
+    go_home:'Home',retake:'Retake',
+    th_auto:'System',th_light:'Light',th_dark:'Dark',
+    grade_good:'Good',grade_watch:'Attention',grade_caution:'Caution',grade_danger:'Warning',grade_critical:'Consult Required',
+    min_est:'min est.',loading:'Please wait...',analyzing:'Analyzing results...',
+    ai_diag_title:'AI Diagnostic Analysis',ai_no_diag:'AI is not configured.',
+    ai_error:'AI analysis error: ',
+    ai_eval_loading:'AI is writing your comprehensive evaluation...',
+    guide_title:'How to get an API key',modal_close:'Close',
+    ai_not_configured:'AI features are not configured. Restart the test and enter your API key in the AI setup step.',
+    ai_badge_on:'ON',
+  },
+  ja:{
+    hero_badge:'総合心理自己検査',hero_title:'あなたの心の奥を<span>覗いてみましょう</span>',
+    hero_desc:'23種類の心理・精神健康指標を一度に測定します。臨床診断ではなく自己理解の参考資料としてご活用ください。',
+    disc_title:'重要なお知らせ:',disc_body:'本検査は臨床診断ツールではなく、自己認識の参考資料です。深刻な症状が疑われる場合は精神科専門医にご相談ください。',
+    cnt_title:'検査する問題数を選択してください',start_btn:'検査を開始する',
+    feat_title:'何を測定しますか？',feat_sub:'23種類の心理・精神健康指標',
+    sc1:'全くそう思わない',sc2:'そう思わない',sc3:'どちらでもない',sc4:'そう思う',sc5:'非常にそう思う',
+    prev:'前へ',next:'次へ',submit:'結果を見る',progress_q:'問',
+    ai_title:'AI機能設定',ai_sub:'任意 — スキップできます',
+    ai_priv_warn:'⚠️ プライバシー注意事項:',
+    ai_priv_body:'AI機能使用時、検査結果数値が選択したAIプラットフォームサーバーに送信されます。APIキーはブラウザセッション中のみ一時保管され、タブを閉じると削除されます。',
+    ai_plat_title:'AIプラットフォームを選択',ai_key_title:'APIキーを入力',ai_key_ph:'APIキーを入力してください',
+    ai_key_guide:'APIキーの取得方法',ai_model_title:'モデルを選択',
+    ai_skip:'AIなしで続ける',ai_confirm:'AI機能を有効にする',
+    ai_analyzing:'AIが結果を分析中...',
+    tab_numeric:'数値結果',tab_ai:'🤖 AI診断',
+    res_title:'🔍 検査結果',res_sub:'項目をクリックすると詳細が表示されます',
+    res_disc:'※ 自己報告式心理参考検査です。臨床診断と同一ではありません。',
+    crisis_title:'危機支援 — 今すぐ連絡してください',
+    crisis_body:'自殺・自傷関連の数値が高くなっています。下記機関に即時連絡するか、最寄りの救急室を受診してください。',
+    ai_eval_btn:'AI総合評価を依頼',ai_eval_title:'AI総合評価・改善ガイド',
+    go_home:'ホーム',retake:'再検査',
+    th_auto:'システム',th_light:'ライト',th_dark:'ダーク',
+    grade_good:'良好',grade_watch:'注意',grade_caution:'警戒',grade_danger:'危険',grade_critical:'相談必要',
+    min_est:'分予想',loading:'しばらくお待ちください...',analyzing:'結果を分析中...',
+    ai_diag_title:'AI診断分析',ai_no_diag:'AIが設定されていません。',
+    ai_error:'AI分析エラー: ',ai_eval_loading:'AIが総合評価を作成中...',
+    guide_title:'APIキーの取得方法',modal_close:'閉じる',
+    ai_not_configured:'AI機能が設定されていません。検査を再開始してAI設定ステップでAPIキーを入力してください。',
+    ai_badge_on:'ON',
+  },
+  zh:{
+    hero_badge:'综合心理自我测试',hero_title:'深入探索<span>您的内心世界</span>',
+    hero_desc:'一次性测量23种心理与精神健康指标。请作为自我认知参考，而非临床诊断工具使用。',
+    disc_title:'重要提示:',disc_body:'本测试是自我认知参考工具，非临床诊断工具。如怀疑存在严重症状，请咨询心理健康专业人士。所有结果仅在本地处理。',
+    cnt_title:'请选择测试题目数量',start_btn:'开始测试',
+    feat_title:'测量哪些内容？',feat_sub:'23项心理与精神健康指标',
+    sc1:'非常不同意',sc2:'不同意',sc3:'一般',sc4:'同意',sc5:'非常同意',
+    prev:'上一题',next:'下一题',submit:'查看结果',progress_q:'题',
+    ai_title:'AI功能设置',ai_sub:'可选 — 可以跳过',
+    ai_priv_warn:'⚠️ 隐私注意事项:',
+    ai_priv_body:'使用AI功能时，您的测试结果数值将发送到所选AI平台服务器。API密钥仅在浏览器会话期间临时保存，关闭标签页后立即删除。',
+    ai_plat_title:'选择AI平台',ai_key_title:'输入API密钥',ai_key_ph:'请输入API密钥',
+    ai_key_guide:'如何获取API密钥',ai_model_title:'选择模型',
+    ai_skip:'不使用AI继续',ai_confirm:'启用AI功能',
+    ai_analyzing:'AI正在分析您的结果...',
+    tab_numeric:'数值结果',tab_ai:'🤖 AI诊断',
+    res_title:'🔍 测试结果',res_sub:'点击项目可展开详细说明',
+    res_disc:'※ 自我报告式心理参考测试，不等同于临床诊断。',
+    crisis_title:'危机支持 — 请立即联系',
+    crisis_body:'您的自杀/自伤相关分数较高，请立即联系以下机构或前往最近的急诊室。',
+    ai_eval_btn:'请求AI综合评估',ai_eval_title:'AI综合评估·改善指南',
+    go_home:'返回首页',retake:'重新测试',
+    th_auto:'系统',th_light:'浅色',th_dark:'深色',
+    grade_good:'良好',grade_watch:'关注',grade_caution:'注意',grade_danger:'危险',grade_critical:'需要咨询',
+    min_est:'分钟预估',loading:'请稍候...',analyzing:'正在分析结果...',
+    ai_diag_title:'AI诊断分析',ai_no_diag:'AI未配置。',
+    ai_error:'AI分析错误: ',ai_eval_loading:'AI正在撰写综合评估...',
+    guide_title:'如何获取API密钥',modal_close:'关闭',
+    ai_not_configured:'AI功能未配置。请重新开始测试并在AI设置步骤中输入API密钥。',
+    ai_badge_on:'ON',
+  }
+};
+
+/* ================================================================
+   AI PLATFORMS
+================================================================ */
+const AI_PLATFORMS={
+  google:{
+    name:'Google AI Studio',icon:'🔵',free:true,
+    keyUrl:'https://aistudio.google.com/apikey',
+    models:[
+      {id:'gemini-2.0-flash-lite',name:'Gemini 2.0 Flash Lite',desc:'빠르고 경제적'},
+      {id:'gemini-2.0-flash',name:'Gemini 2.0 Flash',desc:'균형 잡힌 성능'},
+      {id:'gemini-1.5-flash',name:'Gemini 1.5 Flash',desc:'안정적'},
+      {id:'gemini-1.5-pro',name:'Gemini 1.5 Pro',desc:'높은 정확도'},
+    ],
+    guide:{
+      ko:['Google AI Studio(<a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a>)에 접속하세요.','Google 계정으로 로그인하세요.','왼쪽 메뉴에서 "Get API key"를 클릭하세요.','"Create API key"를 눌러 새 키를 생성하세요.','생성된 키를 복사해 위에 붙여넣으세요.'],
+      en:['Go to Google AI Studio (<a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a>).','Sign in with your Google account.','Click "Get API key" in the left menu.','Click "Create API key" to generate a new key.','Copy the key and paste it above.'],
+      ja:['Google AI Studio(<a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a>)にアクセス。','Googleアカウントでログイン。','左メニューの「Get API key」をクリック。','「Create API key」で新しいキーを作成。','キーをコピーして上に貼り付け。'],
+      zh:['访问Google AI Studio(<a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a>)。','用Google账号登录。','点击左侧菜单中的"Get API key"。','点击"Create API key"生成新密钥。','复制密钥并粘贴到上方。'],
+    },
+    async call(key,model,msgs){
+      const url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+      const body={contents:msgs.map(m=>({role:m.role==='assistant'?'model':m.role,parts:[{text:m.content}]})),generationConfig:{temperature:.75,maxOutputTokens:2048}};
+      const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error?.message||'Google AI Error');
+      return d.candidates[0].content.parts[0].text;
+    }
+  },
+  groq:{
+    name:'Groq',icon:'⚡',free:true,
+    keyUrl:'https://console.groq.com/keys',
+    models:[
+      {id:'llama-3.3-70b-versatile',name:'Llama 3.3 70B',desc:'최고 성능'},
+      {id:'llama-3.1-8b-instant',name:'Llama 3.1 8B (Fast)',desc:'매우 빠름'},
+      {id:'gemma2-9b-it',name:'Gemma 2 9B',desc:'균형'},
+      {id:'mixtral-8x7b-32768',name:'Mixtral 8x7B',desc:'긴 컨텍스트'},
+    ],
+    guide:{
+      ko:['Groq Console(<a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>)에 접속하세요.','계정을 만들거나 로그인하세요.','"API Keys" 메뉴에서 "Create API Key"를 클릭하세요.','생성된 키를 복사해 위에 붙여넣으세요.'],
+      en:['Go to Groq Console (<a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>).','Create an account or sign in.','Click "Create API Key" in the "API Keys" menu.','Copy the key and paste it above.'],
+      ja:['Groq Console(<a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>)にアクセス。','アカウント作成またはログイン。','「API Keys」メニューで「Create API Key」をクリック。','キーをコピーして上に貼り付け。'],
+      zh:['访问Groq Console(<a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>)。','创建账号或登录。','在"API Keys"菜单中点击"Create API Key"。','复制密钥并粘贴到上方。'],
+    },
+    async call(key,model,msgs){
+      const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model,messages:msgs,temperature:.75,max_tokens:2048})});
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error?.message||'Groq API Error');
+      return d.choices[0].message.content;
+    }
+  },
+  openai:{
+    name:'OpenAI',icon:'🤖',free:false,
+    keyUrl:'https://platform.openai.com/api-keys',
+    models:[
+      {id:'gpt-4o-mini',name:'GPT-4o Mini',desc:'빠르고 경제적'},
+      {id:'gpt-4o',name:'GPT-4o',desc:'최고 성능'},
+      {id:'gpt-4-turbo',name:'GPT-4 Turbo',desc:'고성능'},
+      {id:'gpt-3.5-turbo',name:'GPT-3.5 Turbo',desc:'경제적'},
+    ],
+    guide:{
+      ko:['OpenAI Platform(<a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>)에 접속하세요.','로그인 후 "API keys" 메뉴로 이동하세요.','"Create new secret key"를 클릭하세요.','생성된 키를 복사해 위에 붙여넣으세요. (한 번만 표시됩니다!)','⚠️ 유료 API입니다. 크레딧이 필요합니다.'],
+      en:['Go to OpenAI Platform (<a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>).','Navigate to the "API keys" section.','Click "Create new secret key".','Copy the key and paste above. (Shown only once!)','⚠️ Paid API — requires credits.'],
+      ja:['OpenAI Platform(<a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>)にアクセス。','「API keys」メニューへ移動。','「Create new secret key」をクリック。','キーをコピー（1回のみ表示）して貼り付け。','⚠️ 有料APIです。クレジットが必要です。'],
+      zh:['访问OpenAI Platform(<a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>)。','导航到"API keys"部分。','点击"Create new secret key"。','复制密钥并粘贴（仅显示一次！）','⚠️ 付费API，需要额度。'],
+    },
+    async call(key,model,msgs){
+      const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model,messages:msgs,temperature:.75,max_tokens:2048})});
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error?.message||'OpenAI Error');
+      return d.choices[0].message.content;
+    }
+  },
+  anthropic:{
+    name:'Anthropic Claude',icon:'🌟',free:false,
+    keyUrl:'https://console.anthropic.com/settings/keys',
+    models:[
+      {id:'claude-haiku-3-5-latest',name:'Claude 3.5 Haiku',desc:'빠르고 경제적'},
+      {id:'claude-sonnet-4-5',name:'Claude Sonnet 4.5',desc:'균형 잡힌 성능'},
+      {id:'claude-opus-4-5',name:'Claude Opus 4.5',desc:'최고 지능'},
+    ],
+    guide:{
+      ko:['Anthropic Console(<a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>)에 접속하세요.','계정을 만들거나 로그인하세요.','"Settings > API Keys"에서 "Create Key"를 클릭하세요.','생성된 키를 복사해 위에 붙여넣으세요.','⚠️ 유료 API입니다. 크레딧이 필요합니다.'],
+      en:['Go to Anthropic Console (<a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>).','Create an account or sign in.','Click "Create Key" under Settings > API Keys.','Copy and paste the key above.','⚠️ Paid API — requires credits.'],
+      ja:['Anthropic Console(<a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>)にアクセス。','アカウント作成またはログイン。','Settings > API Keysで「Create Key」をクリック。','キーをコピーして貼り付け。','⚠️ 有料APIです。'],
+      zh:['访问Anthropic Console(<a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>)。','创建账号或登录。','在Settings > API Keys下点击"Create Key"。','复制并粘贴密钥。','⚠️ 付费API，需要额度。'],
+    },
+    async call(key,model,msgs){
+      const sys=msgs.find(m=>m.role==='system');
+      const userMsgs=msgs.filter(m=>m.role!=='system');
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:2048,system:sys?sys.content:undefined,messages:userMsgs.map(m=>({role:m.role,content:m.content}))})});
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error?.message||'Anthropic Error');
+      return d.content[0].text;
+    }
+  }
+};
+
+/* ================================================================
+   CATEGORIES (23)
+================================================================ */
+const CATS=[
+  {id:'psychopathy',icon:'🎭',
+    nameKo:'사이코패시',nameEn:'Psychopathy',nameJa:'精神病質',nameZh:'精神病态',
+    descKo:'공감 능력 결여, 양심의 가책 부재, 조종적 행동, 표면적 매력을 특징으로 하는 성격 특성입니다. PCL-R 척도 기반.',
+    descEn:'Characterized by lack of empathy, absence of remorse, manipulative behavior, and superficial charm. PCL-R based.',
+    descJa:'共感能力の欠如、良心の呵責の欠如、操作的行動を特徴とする性格特性。PCL-Rスケール基準。',
+    descZh:'以缺乏同理心、缺乏悔恨感、操纵性行为为特征的人格特质。基于PCL-R量表。',
+    adviceKo:'높은 수치라면 대인관계 패턴에 대한 전문가 상담을 권장합니다.',
+    adviceEn:'High scores suggest professional counseling regarding interpersonal patterns.',
+    adviceJa:'高いスコアは対人関係パターンの専門家相談を推奨します。',
+    adviceZh:'高分建议就人际关系模式寻求专业咨询。'},
+  {id:'sociopathy',icon:'⚡',
+    nameKo:'소시오패시',nameEn:'Sociopathy',nameJa:'社会病質',nameZh:'社会病态',
+    descKo:'충동적·무책임한 행동, 사회적 규범 무시, 폭발적 감정을 특징으로 하는 반사회적 성격장애 경향입니다.',
+    descEn:'ASPD tendencies characterized by impulsive/irresponsible behavior, disregard for social norms, and volatile emotions.',
+    descJa:'衝動的・無責任な行動、社会的規範の無視を特徴とする反社会的人格障害傾向。',
+    descZh:'以冲动和不负责任的行为、无视社会规范为特征的反社会人格障碍倾向。',
+    adviceKo:'충동 조절에 어려움이 있다면 인지행동치료(CBT)가 도움이 됩니다.',
+    adviceEn:'Cognitive Behavioral Therapy (CBT) may help with impulse control difficulties.',
+    adviceJa:'衝動制御の困難には認知行動療法(CBT)が有効です。',
+    adviceZh:'认知行为疗法(CBT)可能有助于改善冲动控制困难。'},
+  {id:'burnout',icon:'🔥',
+    nameKo:'번아웃',nameEn:'Burnout',nameJa:'バーンアウト',nameZh:'职业倦怠',
+    descKo:'만성적 스트레스로 인한 정서적 고갈, 무감각, 효능감 상실 상태입니다. MBI(Maslach Burnout Inventory) 기반.',
+    descEn:'Emotional exhaustion, depersonalization, and reduced efficacy from chronic stress. Based on MBI.',
+    descJa:'慢性的なストレスによる情緒的消耗、無感覚、効力感の喪失。MBI基準。',
+    descZh:'由慢性压力导致的情绪耗竭、去人性化和效能感降低。基于MBI量表。',
+    adviceKo:'번아웃 징후가 있다면 적절한 휴식과 업무 경계 설정이 필요합니다.',
+    adviceEn:'Signs of burnout require adequate rest and establishing work-life boundaries.',
+    adviceJa:'バーンアウトの兆候には適切な休息と仕事の境界設定が必要です。',
+    adviceZh:'职业倦怠迹象需要充分休息并设定工作边界。'},
+  {id:'slump',icon:'📉',
+    nameKo:'슬럼프',nameEn:'Slump',nameJa:'スランプ',nameZh:'低谷期',
+    descKo:'일시적 동기 저하, 수행 능력 감소, 무기력감을 특징으로 하는 심리적 상태입니다. 번아웃보다 가역적입니다.',
+    descEn:'Temporary decline in motivation, performance, and sense of lethargy. More reversible than burnout.',
+    descJa:'一時的なモチベーション低下、パフォーマンス減少を特徴とする心理状態。バーンアウトより可逆的。',
+    descZh:'以暂时性动力下降、表现退步为特征的心理状态，比职业倦怠更可逆。',
+    adviceKo:'작은 성취부터 시작해 점진적으로 자신감을 회복하세요.',
+    adviceEn:'Start with small achievements and gradually rebuild confidence.',
+    adviceJa:'小さな成果から始めて徐々に自信を取り戻しましょう。',
+    adviceZh:'从小成就开始，逐步重建自信。'},
+  {id:'ptsd',icon:'💥',
+    nameKo:'PTSD',nameEn:'PTSD',nameJa:'PTSD',nameZh:'PTSD',
+    descKo:'충격적 사건 후 나타나는 침습 증상(플래시백, 악몽), 회피 행동, 과각성 상태입니다. PCL-5 기반.',
+    descEn:'Intrusion symptoms (flashbacks, nightmares), avoidance, and hyperarousal following trauma. PCL-5 based.',
+    descJa:'トラウマ後の侵入症状（フラッシュバック、悪夢）、回避行動、過覚醒。PCL-5基準。',
+    descZh:'创伤后出现的侵入性症状（闪回、噩梦）、回避行为和过度警觉。基于PCL-5。',
+    adviceKo:'PTSD 증상이 의심되면 EMDR·CPT 트라우마 전문 치료사의 도움을 받으세요.',
+    adviceEn:'If PTSD is suspected, seek help from a trauma specialist (EMDR, CPT).',
+    adviceJa:'PTSD症状が疑われる場合、トラウマ専門治療師(EMDR、CPT)に相談を。',
+    adviceZh:'若怀疑有PTSD，请寻求创伤专科治疗师（EMDR、CPT）的帮助。'},
+  {id:'pted',icon:'😤',
+    nameKo:'PTED',nameEn:'PTED',nameJa:'PTED',nameZh:'PTED',
+    descKo:'불공정한 부정적 사건 경험 후 지속되는 극심한 울분, 분노, 무력감입니다. 직장 해고·이별 이후 주로 발생합니다.',
+    descEn:'Persistent extreme bitterness, anger, and helplessness following unjust negative events. Often after job loss or separation.',
+    descJa:'不公平な否定的出来事後の持続する極度の憤慨と怒り。解雇や別離後によく発生。',
+    descZh:'遭受不公正负面事件后持续的极度愤恨和无力感。常发生于失业或分离之后。',
+    adviceKo:'울분 감정이 지속된다면 수용 전념 치료(ACT)나 인지 재구성이 도움이 됩니다.',
+    adviceEn:'If embitterment persists, ACT or cognitive restructuring therapy may help.',
+    adviceJa:'憤慨感情が続く場合、ACTや認知再構成療法が有効です。',
+    adviceZh:'若愤恨情绪持续，接受与承诺疗法(ACT)或认知重构可能有帮助。'},
+  {id:'depression',icon:'🌧️',
+    nameKo:'우울증',nameEn:'Depression',nameJa:'うつ病',nameZh:'抑郁症',
+    descKo:'지속적 슬픔, 흥미 상실, 에너지 저하, 무가치감을 특징으로 합니다. PHQ-9 기반.',
+    descEn:'Persistent sadness, loss of interest, low energy, and feelings of worthlessness. PHQ-9 based.',
+    descJa:'持続的な悲しみ、興味の喪失、エネルギー低下、無価値感。PHQ-9基準。',
+    descZh:'以持续悲伤、兴趣丧失、精力低下和无价值感为特征。基于PHQ-9。',
+    adviceKo:'2주 이상 우울 증상이 지속된다면 전문가 상담을 강력히 권장합니다.',
+    adviceEn:'If depressive symptoms persist over 2 weeks, professional consultation is strongly recommended.',
+    adviceJa:'うつ症状が2週間以上続く場合、専門家への相談を強くお勧めします。',
+    adviceZh:'若抑郁症状持续超过2周，强烈建议寻求专业咨询。'},
+  {id:'anxiety',icon:'😰',
+    nameKo:'불안장애',nameEn:'Anxiety Disorder',nameJa:'不安障害',nameZh:'焦虑障碍',
+    descKo:'만성적·과도한 걱정, 긴장, 신체 증상(심장 두근거림, 발한)을 특징으로 합니다. GAD-7 기반.',
+    descEn:'Chronic excessive worry, tension, and physical symptoms (palpitations, sweating). GAD-7 based.',
+    descJa:'慢性的で過度な心配、緊張、身体症状（動悸、発汗）。GAD-7基準。',
+    descZh:'慢性过度担忧、紧张和躯体症状（心悸、出汗）。基于GAD-7。',
+    adviceKo:'마음챙김 명상, 호흡법, 인지행동치료(CBT)가 효과적입니다.',
+    adviceEn:'Mindfulness, breathing techniques, and CBT are effective for anxiety management.',
+    adviceJa:'マインドフルネス、呼吸法、CBTが不安管理に効果的です。',
+    adviceZh:'正念冥想、呼吸技术和CBT对焦虑管理有效。'},
+  {id:'narcissism',icon:'👑',
+    nameKo:'나르시시즘',nameEn:'Narcissism',nameJa:'ナルシシズム',nameZh:'自恋',
+    descKo:'웅장한 자기상, 찬사 욕구, 공감 결여를 특징으로 합니다. NPI(자기애적 성격 목록) 기반.',
+    descEn:'Grandiose self-image, need for admiration, lack of empathy. Based on NPI.',
+    descJa:'壮大な自己像、賞賛への欲求、共感の欠如。NPI基準。',
+    descZh:'宏大的自我形象、对赞美的渴望和缺乏同理心。基于NPI量表。',
+    adviceKo:'자기 중심적 패턴이 관계에 문제를 일으킨다면 심리치료가 도움이 됩니다.',
+    adviceEn:'If self-centered patterns cause relationship problems, psychotherapy can help.',
+    adviceJa:'自己中心的パターンが関係に問題を引き起こしている場合、心理療法が有効です。',
+    adviceZh:'若以自我为中心的模式造成关系问题，心理治疗可能有帮助。'},
+  {id:'bpd',icon:'🌊',
+    nameKo:'경계성 성격',nameEn:'BPD Traits',nameJa:'境界性人格',nameZh:'边缘型人格',
+    descKo:'감정 불안정성, 이상화/평가절하, 충동성, 자아 혼란을 특징으로 하는 경계성 성격장애 경향입니다.',
+    descEn:'BPD traits: emotional instability, idealization/devaluation, impulsivity, identity disturbance.',
+    descJa:'感情の不安定性、理想化・価値下げ、衝動性、自我の混乱を特徴とする境界性人格障害傾向。',
+    descZh:'以情绪不稳定、理想化/贬低、冲动性和自我同一性障碍为特征的边缘型人格障碍倾向。',
+    adviceKo:'경계성 성향이 높다면 변증법적 행동치료(DBT)가 특히 효과적입니다.',
+    adviceEn:'Dialectical Behavior Therapy (DBT) is particularly effective for BPD traits.',
+    adviceJa:'高い境界性傾向には弁証法的行動療法(DBT)が特に効果的です。',
+    adviceZh:'边缘型特征高者，辩证行为疗法(DBT)尤为有效。'},
+  {id:'ocd',icon:'🔄',
+    nameKo:'강박 성향',nameEn:'OCD Traits',nameJa:'強迫性向',nameZh:'强迫倾向',
+    descKo:'반복적 강박 사고와 강박 행동을 특징으로 합니다. Y-BOCS 기반.',
+    descEn:'Repetitive obsessive thoughts and compulsive behaviors. Y-BOCS based.',
+    descJa:'繰り返す強迫観念と強迫行為を特徴とする。Y-BOCS基準。',
+    descZh:'以重复性强迫观念和强迫行为为特征。基于Y-BOCS量表。',
+    adviceKo:'노출반응방지법(ERP)과 약물치료 병행이 강박증에 효과적입니다.',
+    adviceEn:'ERP combined with medication is effective for OCD symptoms.',
+    adviceJa:'曝露反応妨害法(ERP)と薬物治療の併用が効果的です。',
+    adviceZh:'暴露反应预防疗法(ERP)与药物治疗相结合对强迫症有效。'},
+  {id:'social_anxiety',icon:'👥',
+    nameKo:'사회불안',nameEn:'Social Anxiety',nameJa:'社会不安',nameZh:'社交焦虑',
+    descKo:'타인의 부정적 평가에 대한 강렬한 두려움으로 사회적 상황을 회피하게 됩니다.',
+    descEn:'Intense fear of negative evaluation by others, leading to avoidance of social situations.',
+    descJa:'他者から否定的に評価されることへの強烈な恐れ。社会的状況を回避させる。',
+    descZh:'对他人负面评价的强烈恐惧，导致回避社交场合。',
+    adviceKo:'점진적 노출 훈련과 인지 재구성이 사회불안 극복에 도움이 됩니다.',
+    adviceEn:'Gradual exposure training and cognitive restructuring help overcome social anxiety.',
+    adviceJa:'段階的な暴露訓練と認知再構成が社会不安克服に有効です。',
+    adviceZh:'逐步暴露训练和认知重构有助于克服社交焦虑。'},
+  {id:'histrionic',icon:'✨',
+    nameKo:'히스트리오닉 성향',nameEn:'Histrionic Traits',nameJa:'演技性人格傾向',nameZh:'表演型人格倾向',
+    descKo:'과도한 감정 표현, 주목 욕구, 극적인 행동, 피암시성이 높음을 특징으로 합니다.',
+    descEn:'Excessive emotionality, need for attention, dramatic behavior, high suggestibility.',
+    descJa:'過度な感情表現、強い注目欲求、劇的な行動、高い被暗示性を特徴とする。',
+    descZh:'以过度的情绪表达、对关注的强烈需求、戏剧化行为和高度受暗示性为特征。',
+    adviceKo:'극적인 감정 표현과 주목 욕구가 관계에 문제를 일으킨다면 심리치료를 고려하세요.',
+    adviceEn:'If dramatic emotions and need for attention cause relationship issues, consider therapy.',
+    adviceJa:'劇的な感情表現が関係に問題を引き起こしている場合、心理療法を検討してください。',
+    adviceZh:'若戏剧化情感表达造成关系问题，请考虑心理治疗。'},
+  {id:'machiavellianism',icon:'♟️',
+    nameKo:'마키아벨리즘',nameEn:'Machiavellianism',nameJa:'マキャベリズム',nameZh:'马基雅维利主义',
+    descKo:'목표 달성을 위해 타인을 조종하고 도덕보다 실용주의를 우선시하는 경향입니다. "다크 트라이어드" 중 하나.',
+    descEn:'Tendency to manipulate others and prioritize pragmatism over morality. Part of the "Dark Triad."',
+    descJa:'目標達成のために他者を操作し道徳より実用主義を優先する傾向。「ダークトライアド」の一つ。',
+    descZh:'为达目标而操纵他人、将实用主义置于道德之上的倾向。"黑暗三联体"之一。',
+    adviceKo:'인간관계에서 조종적 패턴이 반복된다면 가치관 탐색 심리치료를 고려하세요.',
+    adviceEn:'If manipulative patterns repeat in relationships, consider therapy to explore your values.',
+    adviceJa:'操作的パターンが繰り返される場合、価値観探索の心理療法を検討してください。',
+    adviceZh:'若人际关系中反复出现操控模式，请考虑心理治疗以探索价值观。'},
+  {id:'paranoid',icon:'🔍',
+    nameKo:'편집성 성향',nameEn:'Paranoid Traits',nameJa:'妄想性人格傾向',nameZh:'偏执型人格倾向',
+    descKo:'타인에 대한 만연한 불신·의심, 이유 없는 피해의식, 지속적인 원한을 특징으로 합니다.',
+    descEn:'Pervasive distrust, unwarranted suspicion, and persistent grudges.',
+    descJa:'他者への広まった不信と疑念、根拠なき被害意識、持続的な恨みを特徴とする。',
+    descZh:'以对他人的普遍不信任、无理由的受害意识和持续怨恨为特征。',
+    adviceKo:'불신이 일상을 방해한다면 전문가와 함께 신뢰 형성 훈련을 시작하세요.',
+    adviceEn:'If distrust interferes with daily life, work with a professional on trust-building.',
+    adviceJa:'不信感が日常生活を妨げている場合、専門家と信頼形成訓練を始めましょう。',
+    adviceZh:'若不信任感干扰日常生活，请与专业人士一起进行信任建立训练。'},
+  // NEW CATEGORIES
+  {id:'suicide',icon:'🆘',
+    nameKo:'자살 충동',nameEn:'Suicidal Ideation',nameJa:'自殺念慮',nameZh:'自杀意念',
+    descKo:'자살에 대한 생각, 계획, 충동을 측정합니다. 높은 수치는 즉각적인 전문가 개입이 필요합니다. C-SSRS 기반.',
+    descEn:'Measures thoughts, plans, and impulses toward suicide. High scores require immediate professional intervention. C-SSRS based.',
+    descJa:'自殺に関する考え、計画、衝動を測定します。高いスコアは即時の専門家介入が必要です。C-SSRS基準。',
+    descZh:'测量对自杀的想法、计划和冲动。高分需要立即的专业干预。基于C-SSRS量表。',
+    adviceKo:'🆘 자살 충동이 있다면 즉시 1393(자살예방), 1588-9191(생명의전화)에 전화하세요. 혼자 있지 마세요.',
+    adviceEn:'🆘 If you have suicidal thoughts, call a crisis line immediately. Do not be alone. In Korea: 1393, International: 988.',
+    adviceJa:'🆘 自殺念慮がある場合、すぐによりそいホットライン(0120-279-338)に電話してください。一人でいないでください。',
+    adviceZh:'🆘 若有自杀想法，请立即拨打危机热线。不要独处。中国：400-161-9995。'},
+  {id:'self_harm',icon:'🩹',
+    nameKo:'자해 성향',nameEn:'Self-harm Tendencies',nameJa:'自傷傾向',nameZh:'自伤倾向',
+    descKo:'자살 의도 없는 자해 행동(NSSI) 경향을 측정합니다. 감정 조절의 어려움과 관련됩니다.',
+    descEn:'Measures non-suicidal self-injury (NSSI) tendencies. Related to emotional regulation difficulties.',
+    descJa:'自殺意図のない自傷行動(NSSI)傾向を測定します。感情調節の困難と関連します。',
+    descZh:'测量无自杀意图的自我伤害(NSSI)倾向。与情绪调节困难相关。',
+    adviceKo:'자해 충동이 있다면 DBT의 감정 조절 기술과 고통 감내 기술이 도움이 됩니다. 전문가 상담 필수.',
+    adviceEn:'DBT emotion regulation and distress tolerance skills can help with self-harm urges. Professional consultation required.',
+    adviceJa:'自傷衝動にはDBTの感情調節技術と苦痛耐性技術が有効です。専門家相談必須。',
+    adviceZh:'DBT情绪调节技术和痛苦耐受技术可帮助应对自伤冲动。必须寻求专业咨询。'},
+  {id:'alcohol',icon:'🍺',
+    nameKo:'알코올/물질 남용',nameEn:'Alcohol/Substance Misuse',nameJa:'アルコール/物質乱用',nameZh:'酒精/物质滥用',
+    descKo:'알코올이나 약물에 대한 의존·남용 경향을 측정합니다. AUDIT 척도 기반.',
+    descEn:'Measures alcohol or substance dependency/misuse tendencies. AUDIT based.',
+    descJa:'アルコールや薬物への依存・乱用傾向を測定します。AUDIT基準。',
+    descZh:'测量对酒精或药物的依赖/滥用倾向。基于AUDIT量表。',
+    adviceKo:'음주·약물 문제가 의심된다면 중독 전문 기관 상담이 필요합니다. 한국중독상담전화: 1899-0990.',
+    adviceEn:'If substance misuse is suspected, consult an addiction specialist. SAMHSA helpline: 1-800-662-4357.',
+    adviceJa:'依存症が疑われる場合、専門機関への相談が必要です。',
+    adviceZh:'若怀疑有物质滥用问题，需要咨询成瘾专科机构。'},
+  {id:'eating',icon:'🍽️',
+    nameKo:'섭식장애',nameEn:'Eating Disorder Traits',nameJa:'摂食障害傾向',nameZh:'进食障碍倾向',
+    descKo:'음식 제한, 폭식, 보상 행동, 체형 왜곡 인식 등 섭식장애 경향을 측정합니다. EDE-Q 기반.',
+    descEn:'Measures eating disorder tendencies: restriction, binging, compensatory behaviors, body image distortion. EDE-Q based.',
+    descJa:'食事制限、過食、補償行動、体型の歪んだ認識などの摂食障害傾向を測定。EDE-Q基準。',
+    descZh:'测量饮食限制、暴食、补偿行为、体形认知扭曲等进食障碍倾向。基于EDE-Q量表。',
+    adviceKo:'섭식장애 경향이 높다면 영양사·심리치료사의 전문 통합 치료가 필요합니다.',
+    adviceEn:'Elevated eating disorder traits require integrated treatment from a nutritionist and psychotherapist.',
+    adviceJa:'摂食障害傾向が高い場合、栄養士と心理療法士による専門統合治療が必要です。',
+    adviceZh:'进食障碍倾向高者需要营养师和心理治疗师的专业综合治疗。'},
+  {id:'insomnia',icon:'😴',
+    nameKo:'수면장애',nameEn:'Sleep Disorder (Insomnia)',nameJa:'睡眠障害',nameZh:'睡眠障碍',
+    descKo:'수면 개시·유지의 어려움, 수면 부족으로 인한 낮 기능 저하를 측정합니다. ISI 기반.',
+    descEn:'Measures difficulty initiating/maintaining sleep and daytime impairment from sleep deficiency. ISI based.',
+    descJa:'入眠・睡眠維持の困難、睡眠不足による昼間の機能低下を測定。ISI基準。',
+    descZh:'测量入睡/维持睡眠困难以及睡眠不足导致的日间功能障碍。基于ISI量表。',
+    adviceKo:'수면 위생 개선, 인지행동치료 불면증 전문 치료(CBT-I)가 매우 효과적입니다.',
+    adviceEn:'Sleep hygiene improvement and CBT-I (CBT for Insomnia) are highly effective.',
+    adviceJa:'睡眠衛生の改善とCBT-I（不眠症のCBT）が非常に効果的です。',
+    adviceZh:'改善睡眠卫生和失眠认知行为疗法(CBT-I)非常有效。'},
+  {id:'bipolar',icon:'⚖️',
+    nameKo:'양극성/조증 성향',nameEn:'Bipolar/Manic Traits',nameJa:'双極性/躁症状傾向',nameZh:'双相/躁狂倾向',
+    descKo:'에너지 급등, 수면 감소 필요, 충동적 결정, 기분의 극단적 순환 등 양극성장애 경향을 측정합니다. MDQ 기반.',
+    descEn:'Measures bipolar tendencies: energy surges, reduced sleep need, impulsive decisions, mood cycling. MDQ based.',
+    descJa:'エネルギーの急上昇、睡眠減少、衝動的決断、極端な気分の波など双極性障害傾向を測定。MDQ基準。',
+    descZh:'测量双相障碍倾向：能量激增、减少睡眠需求、冲动决策、情绪极端波动。基于MDQ量表。',
+    adviceKo:'양극성 성향이 높다면 정신과 전문의의 정확한 진단과 기분 안정제 평가가 중요합니다.',
+    adviceEn:'High bipolar traits require accurate diagnosis by a psychiatrist and mood stabilizer evaluation.',
+    adviceJa:'双極性傾向が高い場合、精神科専門医の正確な診断と気分安定薬の評価が重要です。',
+    adviceZh:'双相倾向高者需要精神科专科医生的准确诊断和情绪稳定剂评估。'},
+  {id:'dissociation',icon:'🌫️',
+    nameKo:'해리 성향',nameEn:'Dissociation',nameJa:'解離傾向',nameZh:'解离倾向',
+    descKo:'현실 감각 상실, 이인증, 기억 공백 등 해리 경험을 측정합니다. DES(해리 경험 척도) 기반.',
+    descEn:'Measures dissociative experiences: derealization, depersonalization, amnesia. DES based.',
+    descJa:'現実感の喪失、離人症、記憶の空白などの解離経験を測定。DES基準。',
+    descZh:'测量解离经历：现实感丧失、人格解体、记忆空白。基于DES量表。',
+    adviceKo:'해리 증상이 심하다면 해리 전문 치료사와 트라우마 중심 치료를 권장합니다.',
+    adviceEn:'If dissociation is severe, trauma-focused therapy with a dissociation specialist is recommended.',
+    adviceJa:'解離症状が重い場合、解離専門治療師によるトラウマ中心療法を推奨します。',
+    adviceZh:'若解离症状严重，建议与解离专科治疗师进行创伤中心治疗。'},
+  {id:'internet_addiction',icon:'📱',
+    nameKo:'인터넷/게임 중독',nameEn:'Internet/Gaming Addiction',nameJa:'インターネット/ゲーム依存',nameZh:'网络/游戏成瘾',
+    descKo:'인터넷·게임 사용에 대한 통제 상실, 금단 증상, 생활 기능 저하를 측정합니다. IAT 기반.',
+    descEn:'Measures loss of control over internet/gaming use, withdrawal symptoms, and functional impairment. IAT based.',
+    descJa:'インターネット・ゲーム使用への制御喪失、禁断症状、生活機能低下を測定。IAT基準。',
+    descZh:'测量对网络/游戏使用的控制力丧失、戒断症状和生活功能障碍。基于IAT量表。',
+    adviceKo:'인터넷 중독이 의심된다면 디지털 디톡스와 중독 전문 상담을 고려하세요.',
+    adviceEn:'If internet addiction is suspected, consider digital detox and addiction counseling.',
+    adviceJa:'インターネット依存が疑われる場合、デジタルデトックスと依存症専門カウンセリングを検討してください。',
+    adviceZh:'若怀疑有网络成瘾，请考虑数字排毒和成瘾专业咨询。'},
+];
+
+/* ================================================================
+   ALL QUESTIONS (141)
+================================================================ */
+const ALL_QUESTIONS=[
+  // PSYCHOPATHY (7)
+  {text:{ko:'다른 사람의 감정에 공감하기가 매우 어렵다.',en:"I find it very difficult to empathize with others' feelings.",ja:'他者の感情に共感することがとても難しい。',zh:'我发现很难对他人的感受产生共鸣。'},weights:{psychopathy:3,sociopathy:1,narcissism:2}},
+  {text:{ko:'규칙을 어기더라도 내 목표를 달성하는 것이 더 중요하다.',en:'Achieving my goals matters more even if it means breaking rules.',ja:'ルールを破っても自分の目標を達成することが重要だ。',zh:'即使违反规则，实现目标也更重要。'},weights:{psychopathy:3,sociopathy:2,machiavellianism:2}},
+  {text:{ko:'거짓말을 해도 죄책감을 거의 느끼지 않는다.',en:'I rarely feel guilty when I lie.',ja:'嘘をついても罪悪感をほとんど感じない。',zh:'我撒谎时几乎不感到愧疚。'},weights:{psychopathy:4,sociopathy:2}},
+  {text:{ko:'상대방이 상처를 받더라도 내가 원하는 것을 얻는다.',en:"I get what I want even if it hurts the other person.",ja:'相手が傷ついても自分が欲しいものを手に入れる。',zh:'即使伤害对方，我也会得到我想要的。'},weights:{psychopathy:3,machiavellianism:3,narcissism:1}},
+  {text:{ko:'위험하거나 스릴 있는 상황이 매력적으로 느껴진다.',en:'Dangerous or thrilling situations feel attractive to me.',ja:'危険でスリルのある状況が魅力的に感じられる。',zh:'危险或刺激的情况对我很有吸引力。'},weights:{psychopathy:2,sociopathy:2}},
+  {text:{ko:'타인의 약점을 파악하고 활용하는 것이 자연스럽다.',en:"Identifying and exploiting others' weaknesses feels natural.",ja:'他者の弱点を把握して活用することが自然だ。',zh:'识别并利用他人的弱点感觉很自然。'},weights:{psychopathy:3,machiavellianism:4,narcissism:1}},
+  {text:{ko:'누군가를 조종해 내 뜻대로 움직인 적이 있다.',en:"I have manipulated someone to do what I wanted.",ja:'誰かを操って自分の思い通りに動かしたことがある。',zh:'我曾经操纵别人按我的意愿行事。'},weights:{psychopathy:2,machiavellianism:4,sociopathy:1}},
+  // SOCIOPATHY (7)
+  {text:{ko:'법이나 사회 규범이 나에게는 별로 중요하지 않다.',en:'Laws and social norms are not very important to me.',ja:'法律や社会的規範は自分にとってあまり重要ではない。',zh:'法律和社会规范对我来说并不重要。'},weights:{sociopathy:4,psychopathy:1}},
+  {text:{ko:'충동적으로 행동한 후 후회한 적이 많다.',en:"I've often acted impulsively and regretted it.",ja:'衝動的に行動して後悔したことが多い。',zh:'我常常冲动行事后悔。'},weights:{sociopathy:3,bpd:2}},
+  {text:{ko:'약속을 자주 지키지 못하거나 다른 사람에게 책임을 전가한다.',en:"I often fail to keep promises or shift blame to others.",ja:'約束をよく守れなかったり他者に責任を転嫁したりする。',zh:'我经常不能遵守承诺或将责任转嫁给他人。'},weights:{sociopathy:3,psychopathy:1}},
+  {text:{ko:'분노가 폭발적으로 터져 나온 적이 있다.',en:'My anger has erupted explosively.',ja:'怒りが爆発的に溢れ出したことがある。',zh:'我的愤怒曾经爆发性地发作。'},weights:{sociopathy:3,bpd:3,pted:1}},
+  {text:{ko:'돈이나 자원을 무책임하게 사용하는 편이다.',en:'I tend to use money or resources irresponsibly.',ja:'お金やリソースを無責任に使う傾向がある。',zh:'我倾向于不负责任地使用金钱或资源。'},weights:{sociopathy:3}},
+  {text:{ko:'타인의 권리를 무시한 행동을 한 적이 있다.',en:"I have acted in ways that disregard others' rights.",ja:'他者の権利を無視した行動をしたことがある。',zh:'我曾有过无视他人权利的行为。'},weights:{sociopathy:4,psychopathy:1}},
+  {text:{ko:'결과를 생각하지 않고 즉흥적으로 중요한 결정을 내린다.',en:'I make important decisions impulsively without thinking about consequences.',ja:'結果を考えずに衝動的に重要な決断を下す。',zh:'我不考虑后果地冲动做出重要决定。'},weights:{sociopathy:3,bpd:2}},
+  // BURNOUT (7)
+  {text:{ko:'매일 아침 일어나기가 너무 힘들고 하루를 시작하기 싫다.',en:"Every morning it's very hard to get up and I dread starting the day.",ja:'毎朝起き上がるのがとても辛く、一日を始めたくない。',zh:'每天早上很难起床，不想开始新的一天。'},weights:{burnout:3,slump:2,depression:2}},
+  {text:{ko:'업무나 학업에서 더 이상 의미를 찾지 못하겠다.',en:"I can no longer find meaning in my work or studies.",ja:'仕事や学業にもうこれ以上意味を見出せない。',zh:'我在工作或学业中再也找不到意义。'},weights:{burnout:4,depression:2,slump:2}},
+  {text:{ko:'사람들을 상대하는 것이 감정적으로 너무 소진된다.',en:'Dealing with people emotionally drains me completely.',ja:'人と接することが感情的に完全に消耗される。',zh:'与人打交道让我情感上完全精疲力竭。'},weights:{burnout:4,social_anxiety:1}},
+  {text:{ko:'이전에는 잘 하던 일이 지금은 형편없이 느껴진다.',en:'Things I used to do well now feel terrible.',ja:'以前はうまくやっていたことが今ではひどく感じられる。',zh:'以前能做好的事情，现在感觉很糟糕。'},weights:{burnout:3,slump:3,depression:1}},
+  {text:{ko:'쉬어도 피로가 회복되지 않는다.',en:'Rest does not restore my energy.',ja:'休んでも疲労が回復しない。',zh:'休息也无法恢复精力。'},weights:{burnout:4,depression:2,insomnia:1}},
+  {text:{ko:'직장이나 학교에 가는 것 자체가 극도로 스트레스이다.',en:'Going to work or school itself is extremely stressful.',ja:'職場や学校に行くこと自体が極度にストレスだ。',zh:'去工作或学校本身就极其有压力。'},weights:{burnout:3,anxiety:2,social_anxiety:1}},
+  {text:{ko:'내 노력이 인정받지 못한다는 느낌이 자주 든다.',en:'I often feel my efforts are not recognized.',ja:'自分の努力が認められていないという感覚がよくある。',zh:'我经常感到自己的努力得不到认可。'},weights:{burnout:2,pted:3,depression:1}},
+  // SLUMP (6)
+  {text:{ko:'예전과 달리 하고 싶은 것이 아무것도 없다.',en:"Unlike before, there's nothing I want to do.",ja:'以前と違って、したいことが何もない。',zh:'与以前不同，我什么都不想做。'},weights:{slump:4,depression:3,burnout:1}},
+  {text:{ko:'무언가를 시작하려 해도 의욕이 전혀 생기지 않는다.',en:"Even when I try to start something, I can't muster any motivation.",ja:'何かを始めようとしても意欲が全く湧いてこない。',zh:'即使想开始做什么，也完全提不起动力。'},weights:{slump:4,depression:2,burnout:1}},
+  {text:{ko:'성취감을 느낀 것이 언제인지 기억이 나지 않는다.',en:"I can't remember the last time I felt a sense of achievement.",ja:'達成感を感じたのがいつだったか思い出せない。',zh:'我不记得上次感到有成就感是什么时候。'},weights:{slump:3,burnout:2,depression:2}},
+  {text:{ko:'오랫동안 실력이나 성과가 늘지 않는 것 같다.',en:'It seems my abilities or performance have not improved for a long time.',ja:'長い間実力やパフォーマンスが伸びていないようだ。',zh:'长期以来，感觉能力或表现没有进步。'},weights:{slump:4,burnout:1}},
+  {text:{ko:'예전에 즐거웠던 취미나 활동이 이제는 재미없다.',en:'Hobbies or activities I used to enjoy are no longer fun.',ja:'以前楽しかった趣味や活動が今はつまらない。',zh:'以前喜欢的爱好或活动现在不再有趣。'},weights:{slump:3,depression:4,burnout:1}},
+  {text:{ko:'잘 해야 한다는 압박감에 오히려 아무것도 못하고 있다.',en:"The pressure to do well is actually preventing me from doing anything.",ja:'うまくやらなければというプレッシャーでかえって何もできていない。',zh:'必须做好的压力反而让我什么都做不了。'},weights:{slump:3,anxiety:2,ocd:1}},
+  // PTSD (8)
+  {text:{ko:'충격적인 과거 사건이 갑자기 생생하게 떠오른다.',en:'Traumatic past events suddenly come back to me vividly.',ja:'衝撃的な過去の出来事が突然鮮明に蘇ってくる。',zh:'创伤性的过去事件突然生动地浮现在眼前。'},weights:{ptsd:5}},
+  {text:{ko:'그 사건과 관련된 꿈이나 악몽을 자주 꾼다.',en:'I frequently have dreams or nightmares related to that event.',ja:'その出来事に関連した夢や悪夢をよく見る。',zh:'我经常做与那件事相关的梦或噩梦。'},weights:{ptsd:5,insomnia:2}},
+  {text:{ko:'그 사건을 떠올리게 하는 장소, 사람, 물건을 피하려 한다.',en:'I try to avoid places, people, or things that remind me of that event.',ja:'その出来事を思い出させる場所、人、物を避けようとする。',zh:'我试图避开会让我想起那件事的地方、人或物品。'},weights:{ptsd:4}},
+  {text:{ko:'항상 위험이 닥칠 것 같아 경계 상태가 지속된다.',en:'I stay constantly on guard, always feeling danger is imminent.',ja:'常に危険が迫ってくるような気がして警戒状態が続く。',zh:'我持续处于警觉状态，总感觉危险即将来临。'},weights:{ptsd:4,anxiety:3}},
+  {text:{ko:'충격적인 사건 이후로 감정이 무뎌지거나 멍한 느낌이 든다.',en:'Since the traumatic event, my emotions have become numb or blunted.',ja:'衝撃的な出来事の後から感情が鈍くなったり茫然とした感じがする。',zh:'在创伤事件之后，我的情感变得麻木或迟钝。'},weights:{ptsd:4,depression:1,dissociation:2}},
+  {text:{ko:'그 사건이 내 잘못이라는 생각이 자꾸 든다.',en:'I keep thinking the event was my fault.',ja:'その出来事が自分のせいだという考えが繰り返し浮かぶ。',zh:'我不断地认为那件事是我的错。'},weights:{ptsd:3,depression:2}},
+  {text:{ko:'사소한 자극(소리, 냄새 등)에도 깜짝 놀라는 반응이 크다.',en:'I startle easily at minor stimuli (sounds, smells, etc.).',ja:'些細な刺激（音、匂いなど）にも大きく驚く反応がある。',zh:'我对微小刺激（声音、气味等）也会有很强烈的惊吓反应。'},weights:{ptsd:4,anxiety:2}},
+  {text:{ko:'그 일이 있고 나서 주변 사람들과 단절된 느낌이다.',en:'Since that event, I feel disconnected from people around me.',ja:'その出来事以来、周囲の人々と切り離された感じがする。',zh:'那件事发生后，我感到与周围的人脱节了。'},weights:{ptsd:3,depression:2,social_anxiety:1,dissociation:1}},
+  // PTED (6)
+  {text:{ko:'내가 당한 불공평한 일이 머릿속에서 떠나질 않는다.',en:"The unfair thing that happened to me won't leave my mind.",ja:'自分が受けた不公平なことが頭から離れない。',zh:'我所遭受的不公正事情在我脑海中挥之不去。'},weights:{pted:5,ptsd:1}},
+  {text:{ko:'그 일을 생각하면 극심한 분노와 울분이 올라온다.',en:'Thinking about that event brings up extreme anger and bitterness.',ja:'そのことを考えると極度の怒りと憤慨が込み上げてくる。',zh:'想到那件事时，我感到极度愤怒和怨恨。'},weights:{pted:5,ptsd:1}},
+  {text:{ko:'세상은 불공평하고 나만 부당한 대우를 받는다는 생각이 든다.',en:'I think the world is unfair and only I receive unjust treatment.',ja:'世界は不公平で自分だけが不当な扱いを受けているという考えがある。',zh:'我认为世界是不公平的，只有我受到了不公正的对待。'},weights:{pted:4,paranoid:2,depression:1}},
+  {text:{ko:'그 일 때문에 삶 전체가 망가진 것 같다.',en:'Because of that event, my whole life seems ruined.',ja:'そのことのために人生全体が壊れてしまったように感じる。',zh:'因为那件事，我感觉整个人生都被毁了。'},weights:{pted:4,depression:3}},
+  {text:{ko:'그 일에 책임 있는 사람이 대가를 치르길 원한다.',en:'I want the person responsible for that event to face consequences.',ja:'その出来事に責任ある人が報いを受けることを望んでいる。',zh:'我希望对那件事负有责任的人得到应有的惩罚。'},weights:{pted:4,paranoid:1}},
+  {text:{ko:'무력하고 더 이상 아무 의미가 없다는 느낌이 강하다.',en:'I strongly feel helpless and that nothing matters anymore.',ja:'無力で、もう何の意味もないという感覚が強い。',zh:'我强烈地感到无力，觉得一切都没有意义了。'},weights:{pted:3,depression:4,burnout:1}},
+  // DEPRESSION (8)
+  {text:{ko:'슬프거나 공허한 기분이 거의 매일 지속된다.',en:'I feel sad or empty nearly every day.',ja:'悲しいか空虚な気持ちがほぼ毎日続く。',zh:'我几乎每天都感到悲伤或空虚。'},weights:{depression:5,ptsd:1}},
+  {text:{ko:'예전에 즐겼던 활동들에서 흥미나 기쁨을 느끼지 못한다.',en:'I feel no interest or joy in activities I used to enjoy.',ja:'以前楽しんでいた活動に興味や喜びを感じられない。',zh:'我对以前喜欢的活动感受不到兴趣或喜悦。'},weights:{depression:5,slump:2}},
+  {text:{ko:'식욕이 현저히 줄었거나 반대로 과식을 한다.',en:'My appetite has significantly decreased or I overeat.',ja:'食欲が著しく減ったか、逆に過食するようになった。',zh:'我的食欲明显减少或开始暴饮暴食。'},weights:{depression:3,eating:2}},
+  {text:{ko:'매일 극심한 피로를 느낀다.',en:'I feel extreme fatigue every day.',ja:'毎日極度の疲労を感じる。',zh:'我每天都感到极度疲倦。'},weights:{depression:3,burnout:2,ptsd:1,insomnia:2}},
+  {text:{ko:'내가 가치 없는 사람이라는 생각이 자주 든다.',en:'I frequently think I am a worthless person.',ja:'自分は価値のない人間だという考えがよく浮かぶ。',zh:'我经常认为自己是个没有价值的人。'},weights:{depression:4,ptsd:1,suicide:1}},
+  {text:{ko:'집중하기 어렵고 기억력이 떨어진 것 같다.',en:'I have difficulty concentrating and my memory seems to have declined.',ja:'集中しにくく、記憶力が低下したように感じる。',zh:'我难以集中注意力，记忆力似乎下降了。'},weights:{depression:3,anxiety:2,burnout:1}},
+  {text:{ko:'자신을 해치거나 삶을 끝내고 싶다는 생각이 든다.',en:'I have thoughts of harming myself or ending my life.',ja:'自分を傷つけたり、命を絶ちたいという気持ちがある。',zh:'我有伤害自己或结束生命的想法。'},weights:{depression:5,ptsd:2,suicide:5,self_harm:3}},
+  {text:{ko:'미래에 대한 희망이 전혀 없다.',en:'I have no hope for the future at all.',ja:'将来に対する希望が全くない。',zh:'我对未来完全没有希望。'},weights:{depression:4,pted:2,burnout:1,suicide:2}},
+  // ANXIETY (7)
+  {text:{ko:'별 이유 없이 긴장하거나 불안한 느낌이 자주 든다.',en:'I often feel tense or anxious for no particular reason.',ja:'特に理由もなく緊張したり不安な感じがよくある。',zh:'我经常无缘无故地感到紧张或焦虑。'},weights:{anxiety:5}},
+  {text:{ko:'걱정을 멈추려 해도 멈출 수가 없다.',en:"I can't stop worrying even when I try.",ja:'心配を止めようとしても止められない。',zh:'即使试图停止担忧，也无法停下来。'},weights:{anxiety:5,ocd:1}},
+  {text:{ko:'작은 일에도 지나치게 걱정하는 편이다.',en:'I tend to worry excessively even about small things.',ja:'些細なことでも過度に心配する方だ。',zh:'我倾向于对小事过度担忧。'},weights:{anxiety:4,ocd:1}},
+  {text:{ko:'몸이 떨리거나 심장이 두근거리는 증상이 자주 있다.',en:'I frequently experience trembling or palpitations.',ja:'体が震えたり、心臓がドキドキする症状がよくある。',zh:'我经常出现颤抖或心悸的症状。'},weights:{anxiety:4,social_anxiety:2,ptsd:1}},
+  {text:{ko:'갑자기 극심한 공포와 공황감이 덮쳐올 때가 있다.',en:'There are times when extreme fear and panic suddenly overwhelm me.',ja:'急激な極度の恐怖とパニック感が押し寄せてくることがある。',zh:'有时候极度的恐惧和恐慌感会突然涌来。'},weights:{anxiety:4,ptsd:2}},
+  {text:{ko:'항상 뭔가 나쁜 일이 일어날 것 같은 예감이 든다.',en:'I always have a feeling that something bad is about to happen.',ja:'常に何か悪いことが起こりそうな予感がする。',zh:'我总有一种不好的事情即将发生的预感。'},weights:{anxiety:4,paranoid:2}},
+  {text:{ko:'신체적으로 근육이 긴장되거나 두통이 자주 생긴다.',en:'I often experience muscle tension or headaches physically.',ja:'身体的に筋肉が緊張したり頭痛がよく起きる。',zh:'我身体上经常出现肌肉紧张或头痛。'},weights:{anxiety:3,burnout:1}},
+  // NARCISSISM (6)
+  {text:{ko:'나는 보통 사람들보다 훨씬 특별하고 우월하다고 생각한다.',en:'I think I am far more special and superior than ordinary people.',ja:'自分は普通の人より遥かに特別で優れていると思う。',zh:'我认为自己远比普通人更特别、更优秀。'},weights:{narcissism:5,psychopathy:1}},
+  {text:{ko:'내 능력과 업적이 충분히 인정받지 못하고 있다.',en:'My abilities and achievements are not sufficiently recognized.',ja:'自分の能力と業績が十分に認められていない。',zh:'我的能力和成就没有得到充分认可。'},weights:{narcissism:4,pted:1}},
+  {text:{ko:'주위 사람들이 나를 특별히 대우해야 한다고 느낀다.',en:'I feel that people around me should treat me specially.',ja:'周囲の人々が自分を特別扱いしてくれるべきだと感じる。',zh:'我觉得周围的人应该特别对待我。'},weights:{narcissism:5}},
+  {text:{ko:'성공, 권력, 아름다움에 대한 환상을 자주 꿈꾼다.',en:'I often daydream about success, power, or beauty.',ja:'成功、権力、美しさについての幻想をよく夢見る。',zh:'我经常幻想关于成功、权力或美貌的事情。'},weights:{narcissism:3,histrionic:2}},
+  {text:{ko:'나보다 능력이 부족한 사람들과 시간을 보내는 것이 아깝다.',en:"It's a waste of time spending time with people less capable than me.",ja:'自分より能力の劣る人々と時間を過ごすのはもったいない。',zh:'和能力不如我的人共度时光是一种浪费。'},weights:{narcissism:4,psychopathy:1}},
+  {text:{ko:'다른 사람을 이용하는 것이 앞으로 나아가는 방법이다.',en:'Using other people is a way to get ahead.',ja:'他者を利用することが前進する方法だ。',zh:'利用他人是向前进的方式。'},weights:{narcissism:3,machiavellianism:4,psychopathy:2}},
+  // BPD (6)
+  {text:{ko:'감정이 매우 빠르게 변하고 스스로도 예측하기 어렵다.',en:'My emotions change very quickly and are hard to predict even for myself.',ja:'感情がとても素早く変わり、自分でも予測しにくい。',zh:'我的情绪变化非常快，就连我自己也难以预测。'},weights:{bpd:5,histrionic:2}},
+  {text:{ko:'버려질 것이 두려워 관계를 유지하기 위해 무리한 행동을 한다.',en:'I do extreme things to maintain relationships out of fear of abandonment.',ja:'見捨てられることが怖くて関係を維持するために無理な行動をする。',zh:'因为害怕被抛弃，我会做过激的事情来维持关系。'},weights:{bpd:5}},
+  {text:{ko:'어떤 사람을 완전히 사랑하다가 갑자기 혐오하게 된다.',en:'I completely love someone and then suddenly hate them.',ja:'ある人を完全に愛しながら突然嫌いになる。',zh:'我会完全地爱一个人，然后突然又憎恨他们。'},weights:{bpd:4}},
+  {text:{ko:'내 정체성이 무엇인지 모르겠고, 자아가 불안정하다.',en:"I don't know what my identity is; my sense of self is unstable.",ja:'自分のアイデンティティが何かわからず、自我が不安定だ。',zh:'我不知道自己的身份认同是什么，自我感很不稳定。'},weights:{bpd:4,dissociation:1}},
+  {text:{ko:'자해나 충동적인 행동(폭식, 과소비 등)을 한 적 있다.',en:'I have engaged in self-harm or impulsive behaviors (binge eating, overspending, etc.).',ja:'自傷や衝動的な行動（暴食、浪費など）をしたことがある。',zh:'我曾有过自我伤害或冲动行为（暴食、过度消费等）。'},weights:{bpd:4,sociopathy:1,self_harm:2}},
+  {text:{ko:'공허한 느낌이 만성적으로 지속된다.',en:'I chronically feel a persistent sense of emptiness.',ja:'慢性的に空虚な感覚が続く。',zh:'我长期持续感到空虚。'},weights:{bpd:4,depression:3}},
+  // OCD (6)
+  {text:{ko:'원치 않는 불쾌한 생각이 반복적으로 머릿속에 침투한다.',en:'Unwanted unpleasant thoughts repeatedly intrude into my mind.',ja:'望まない不快な考えが繰り返し頭に侵入してくる。',zh:'不想要的令人不快的想法反复侵入我的脑海。'},weights:{ocd:5,ptsd:2}},
+  {text:{ko:'특정 행동(확인, 정리, 세척 등)을 하지 않으면 불안하다.',en:"I feel anxious if I don't perform certain behaviors (checking, organizing, cleaning, etc.).",ja:'特定の行動（確認、整理、洗浄など）をしないと不安だ。',zh:'不执行某些行为（检查、整理、清洁等），我就会感到焦虑。'},weights:{ocd:5}},
+  {text:{ko:'같은 행동을 여러 번 반복해야 직성이 풀린다.',en:"I need to repeat the same action multiple times before I'm satisfied.",ja:'同じ行動を何度も繰り返さないと気が済まない。',zh:'我需要重复同样的动作多次才能感到满意。'},weights:{ocd:5}},
+  {text:{ko:'숫자나 순서, 대칭에 집착하는 편이다.',en:'I tend to be obsessed with numbers, order, or symmetry.',ja:'数字や順序、対称に執着する方だ。',zh:'我倾向于对数字、顺序或对称性有执念。'},weights:{ocd:3}},
+  {text:{ko:'불쾌한 생각을 없애려는 노력 자체가 더 생각나게 한다.',en:'The effort to eliminate unpleasant thoughts makes them come up more.',ja:'不快な考えをなくそうとする努力自体がさらに考えさせる。',zh:'消除不愉快想法的努力反而让我更加想到它。'},weights:{ocd:4,anxiety:2}},
+  {text:{ko:'청결, 오염, 질병에 대한 두려움이 매우 크다.',en:'I have a very strong fear of cleanliness, contamination, or illness.',ja:'清潔さ、汚染、疾病に対する恐怖が非常に大きい。',zh:'我对清洁、污染或疾病有非常强烈的恐惧。'},weights:{ocd:4,anxiety:2}},
+  // SOCIAL ANXIETY (6)
+  {text:{ko:'사람들이 많은 상황에서 극도로 긴장하고 불안하다.',en:'I feel extremely tense and anxious in situations with many people.',ja:'人が多い状況で極度に緊張し不安だ。',zh:'在人多的情况下，我感到极度紧张和焦虑。'},weights:{social_anxiety:5,anxiety:2}},
+  {text:{ko:'다른 사람들이 나를 부정적으로 평가할 것 같아 두렵다.',en:'I am afraid that others will evaluate me negatively.',ja:'他者が自分を否定的に評価しそうで怖い。',zh:'我害怕他人会对我做出负面评价。'},weights:{social_anxiety:5,paranoid:1}},
+  {text:{ko:'발표나 대중 앞에서 말하는 것이 매우 힘들다.',en:'Public speaking or presenting is very difficult for me.',ja:'発表や人前で話すことがとても辛い。',zh:'在公众面前演讲或发言对我来说非常困难。'},weights:{social_anxiety:4}},
+  {text:{ko:'사교적 모임 이후에 내가 한 말과 행동을 반복적으로 되짚는다.',en:'After social gatherings, I repeatedly replay what I said and did.',ja:'社交的な集まりの後で自分の言動を繰り返し振り返る。',zh:'社交聚会后，我会反复回想自己说过和做过的事情。'},weights:{social_anxiety:4,ocd:1}},
+  {text:{ko:'사회적 상황이 두려워 미리 회피하거나 거절한다.',en:'I avoid or decline social situations in advance out of fear.',ja:'社会的状況が怖くて事前に回避したり断ったりする。',zh:'因为害怕社交场合，我会提前回避或拒绝。'},weights:{social_anxiety:5,ptsd:1}},
+  {text:{ko:'식사, 글쓰기 등 타인이 지켜보는 상황이 매우 불편하다.',en:'Situations where others watch me eat, write, etc. are very uncomfortable.',ja:'食事、書き物など他者が見ている状況がとても不快だ。',zh:'别人看着我吃饭、写字等情况让我感到非常不舒服。'},weights:{social_anxiety:4}},
+  // HISTRIONIC (5)
+  {text:{ko:'주목 받지 못하면 불편하고 무언가 부족한 느낌이 든다.',en:"When I'm not the center of attention, I feel uncomfortable and lacking something.",ja:'注目を受けないと不快で何か足りない感じがする。',zh:'当我不是关注焦点时，我感到不舒服，觉得缺少了什么。'},weights:{histrionic:5,narcissism:2}},
+  {text:{ko:'감정 표현이 매우 풍부하고 극적인 편이다.',en:'My emotional expressions are very rich and dramatic.',ja:'感情表現がとても豊かで劇的な方だ。',zh:'我的情感表达非常丰富和戏剧化。'},weights:{histrionic:4,bpd:1}},
+  {text:{ko:'매력이나 외모를 이용해 타인의 관심을 끄는 편이다.',en:'I tend to use charm or appearance to attract attention from others.',ja:'魅力や外見を利用して他者の注意を引く方だ。',zh:'我倾向于利用魅力或外表来吸引他人的注意。'},weights:{histrionic:4,narcissism:1}},
+  {text:{ko:'타인의 의견이나 분위기에 쉽게 휩쓸린다.',en:"I am easily swayed by others' opinions or the atmosphere.",ja:'他者の意見や雰囲気に簡単に流される。',zh:'我很容易受他人意见或氛围的影响。'},weights:{histrionic:3}},
+  {text:{ko:'관계를 실제보다 더 친밀하게 느끼거나 표현하는 경향이 있다.',en:'I tend to feel or express relationships as more intimate than they really are.',ja:'関係を実際よりも親密に感じたり表現したりする傾向がある。',zh:'我倾向于将关系感受或表达得比实际更亲密。'},weights:{histrionic:3,bpd:1}},
+  // MACHIAVELLIANISM (6)
+  {text:{ko:'원하는 것을 얻기 위해 상대방을 적절히 조종한다.',en:'I appropriately manipulate others to get what I want.',ja:'欲しいものを手に入れるために相手をうまく操る。',zh:'为了得到我想要的，我会适当地操控对方。'},weights:{machiavellianism:5,psychopathy:1}},
+  {text:{ko:'목적이 수단을 정당화한다고 생각한다.',en:'I believe the end justifies the means.',ja:'目的が手段を正当化すると思う。',zh:'我认为目的证明手段合理。'},weights:{machiavellianism:4,psychopathy:2}},
+  {text:{ko:'상대방의 비밀이나 약점을 알아내 활용하는 것이 유용하다.',en:"Finding out and using others' secrets or weaknesses is useful.",ja:'相手の秘密や弱点を調べて活用することが有用だ。',zh:'了解并利用他人的秘密或弱点是有用的。'},weights:{machiavellianism:5,paranoid:1}},
+  {text:{ko:'인간관계는 서로의 이익을 위한 거래라고 생각한다.',en:'I think interpersonal relationships are transactions for mutual benefit.',ja:'人間関係は互いの利益のための取引だと思う。',zh:'我认为人际关系是为了互利的交易。'},weights:{machiavellianism:3,psychopathy:1}},
+  {text:{ko:'먼 미래를 위해 사람들에게 인내하며 관계를 유지한다.',en:'I maintain relationships with people patiently for long-term benefit.',ja:'遠い将来のために人々に我慢して関係を維持する。',zh:'为了长远利益，我耐心地与人们维持关系。'},weights:{machiavellianism:3}},
+  {text:{ko:'감정보다 전략적 계산으로 행동하는 편이다.',en:'I tend to act based on strategic calculation rather than emotion.',ja:'感情より戦略的な計算で行動する方だ。',zh:'我倾向于基于策略性计算而非情感行事。'},weights:{machiavellianism:3,psychopathy:1}},
+  // PARANOID (6)
+  {text:{ko:'주변 사람들이 나를 이용하려 한다는 의심이 든다.',en:'I suspect that people around me are trying to use me.',ja:'周囲の人々が自分を利用しようとしているという疑いがある。',zh:'我怀疑周围的人试图利用我。'},weights:{paranoid:5}},
+  {text:{ko:'누군가가 내 뒤에서 나쁜 말을 하고 있을 것 같다.',en:'I feel like someone is talking badly about me behind my back.',ja:'誰かが自分の後ろで悪口を言っているような気がする。',zh:'我感觉有人在背后说我坏话。'},weights:{paranoid:5}},
+  {text:{ko:'친한 사람도 사실은 나를 배신할 수 있다고 생각한다.',en:'I think even close people can actually betray me.',ja:'親しい人も実は自分を裏切る可能性があると思う。',zh:'我认为即使是亲近的人也可能背叛我。'},weights:{paranoid:4,bpd:1}},
+  {text:{ko:'칭찬이나 친절 뒤에 숨겨진 의도가 있다고 생각한다.',en:'I think there is a hidden agenda behind compliments or kindness.',ja:'称賛や親切の裏に隠れた意図があると思う。',zh:'我认为称赞或善意背后有隐藏的动机。'},weights:{paranoid:4}},
+  {text:{ko:'과거에 상처받은 일을 잊지 못하고 오래 원한을 품는다.',en:'I cannot forget past hurts and hold grudges for a long time.',ja:'過去に傷ついたことを忘れられず長く恨みを抱く。',zh:'我无法忘记过去的伤害，长期怀有怨恨。'},weights:{paranoid:3,pted:2}},
+  {text:{ko:'특별한 이유 없이도 사람들의 행동이 나를 겨냥한다고 느낀다.',en:"I feel that people's actions are directed at me even without particular reason.",ja:'特別な理由がなくても人々の行動が自分を狙っていると感じる。',zh:'即使没有特别的理由，我也感觉人们的行为是针对我的。'},weights:{paranoid:5}},
+  // NEW: SUICIDE (6)
+  {text:{ko:'살고 싶지 않다는 생각이 자주 든다.',en:'I frequently have thoughts of not wanting to live.',ja:'生きていたくないという考えがよく浮かぶ。',zh:'我经常有不想活下去的想法。'},weights:{suicide:5,depression:3}},
+  {text:{ko:'나 없이 모두가 더 행복할 것이라는 생각이 든다.',en:'I think everyone would be happier without me.',ja:'自分がいなければみんなの方が幸せだという考えがある。',zh:'我认为没有我，大家会更幸福。'},weights:{suicide:5,depression:3}},
+  {text:{ko:'스스로 목숨을 끊고 싶다는 충동이 든 적이 있다.',en:'I have had impulses to end my own life.',ja:'自ら命を絶ちたいという衝動を感じたことがある。',zh:'我曾有过结束自己生命的冲动。'},weights:{suicide:6,depression:2,ptsd:1}},
+  {text:{ko:'삶을 끝내는 구체적인 방법에 대해 생각해본 적이 있다.',en:'I have thought about specific ways to end my life.',ja:'命を絶つ具体的な方法について考えたことがある。',zh:'我曾经思考过结束生命的具体方法。'},weights:{suicide:7,depression:2}},
+  {text:{ko:'미래가 없다고 느껴 사는 이유를 모르겠다.',en:"I feel I have no future and don't know why I'm living.",ja:'将来がないと感じ、生きている理由がわからない。',zh:'我感觉没有未来，不知道活着的意义。'},weights:{suicide:4,depression:4,pted:2}},
+  {text:{ko:'과거에 자살을 시도하거나 심각하게 계획한 적이 있다.',en:'I have previously attempted or seriously planned suicide.',ja:'過去に自殺を試みたり真剣に計画したことがある。',zh:'我曾经尝试过或认真计划过自杀。'},weights:{suicide:7,ptsd:2}},
+  // NEW: SELF-HARM (5)
+  {text:{ko:'고통을 잊기 위해 스스로에게 신체적 고통을 가하고 싶다.',en:'I want to inflict physical pain on myself to forget emotional pain.',ja:'感情的な痛みを忘れるために自分に身体的な痛みを与えたい。',zh:'我想通过给自己造成身体痛苦来忘记情感上的痛苦。'},weights:{self_harm:5,depression:2,bpd:2}},
+  {text:{ko:'자해를 통해 감정을 해소한 적이 있다.',en:'I have relieved emotions through self-harm.',ja:'自傷によって感情を解消したことがある。',zh:'我曾经通过自我伤害来发泄情绪。'},weights:{self_harm:6,bpd:2}},
+  {text:{ko:'몸에 상처를 내거나 때리는 등의 자해 행동을 한다.',en:'I engage in self-harm behaviors such as cutting or hitting myself.',ja:'体に傷をつけたり叩いたりする自傷行動をする。',zh:'我有切割或打击自己等自我伤害行为。'},weights:{self_harm:7,depression:2}},
+  {text:{ko:'자해 충동이 강하게 느껴질 때가 있다.',en:'I sometimes feel a strong urge to self-harm.',ja:'自傷の衝動が強く感じられることがある。',zh:'我有时感到强烈的自我伤害冲动。'},weights:{self_harm:5,bpd:2,anxiety:1}},
+  {text:{ko:'자해 후에 일시적으로 안정감을 느낀 적이 있다.',en:'I have felt temporarily calmer after self-harming.',ja:'自傷後に一時的に安定感を感じたことがある。',zh:'我曾在自我伤害后感到暂时的平静。'},weights:{self_harm:5,bpd:2}},
+  // NEW: ALCOHOL/SUBSTANCE (5)
+  {text:{ko:'기분을 바꾸기 위해 술이나 약물에 의존하는 편이다.',en:'I tend to rely on alcohol or drugs to change my mood.',ja:'気分を変えるためにお酒や薬物に依存する方だ。',zh:'我倾向于依赖酒精或药物来改变情绪。'},weights:{alcohol:5,depression:1,anxiety:1}},
+  {text:{ko:'음주나 약물 사용을 줄이려 했지만 반복해서 실패했다.',en:'I have tried to reduce alcohol or drug use but repeatedly failed.',ja:'飲酒や薬物使用を減らそうとしたが繰り返し失敗した。',zh:'我曾试图减少饮酒或使用药物，但反复失败。'},weights:{alcohol:5}},
+  {text:{ko:'음주나 약물로 인해 사회적·직업적 문제가 생긴 적이 있다.',en:'Alcohol or drug use has caused social or occupational problems for me.',ja:'飲酒や薬物使用で社会的・職業的問題が生じたことがある。',zh:'酒精或药物使用曾给我造成社交或职业问题。'},weights:{alcohol:5,sociopathy:1}},
+  {text:{ko:'술이나 약물 없이는 긴장을 풀거나 잠들기 어렵다.',en:'Without alcohol or drugs, I have trouble relaxing or sleeping.',ja:'お酒や薬物なしには緊張を解くことや眠ることが難しい。',zh:'没有酒精或药物，我很难放松或入睡。'},weights:{alcohol:4,insomnia:2,anxiety:2}},
+  {text:{ko:'전날 기억이 끊길 때까지 음주한 적이 있다.',en:"I've drunk until I had memory blackouts.",ja:'記憶が途切れるまで飲酒したことがある。',zh:'我曾经喝酒直到记忆断片。'},weights:{alcohol:5,sociopathy:1}},
+  // NEW: EATING DISORDER (5)
+  {text:{ko:'음식 섭취량을 극도로 제한하거나 폭식을 반복한다.',en:'I severely restrict food intake or repeatedly binge eat.',ja:'食事摂取量を極端に制限したり、暴食を繰り返したりする。',zh:'我极度限制食物摄入或反复暴食。'},weights:{eating:5}},
+  {text:{ko:'체중이나 체형에 대한 걱정이 일상생활을 방해한다.',en:'Worry about weight or body shape interferes with my daily life.',ja:'体重や体型への心配が日常生活を妨げる。',zh:'对体重或体形的担忧干扰了我的日常生活。'},weights:{eating:5,anxiety:1,ocd:1}},
+  {text:{ko:'먹은 것을 억지로 토하거나 과도한 운동으로 보상한다.',en:'I purge what I eat or compensate with excessive exercise.',ja:'食べたものを無理に吐いたり過度な運動で補おうとする。',zh:'我会强迫自己呕吐或通过过度运动来补偿所吃的东西。'},weights:{eating:6}},
+  {text:{ko:'내 몸이 실제보다 훨씬 뚱뚱하게 보인다고 느낀다.',en:'I feel my body looks much fatter than it actually is.',ja:'自分の体が実際よりずっと太って見えると感じる。',zh:'我感觉自己的身体看起来比实际上胖得多。'},weights:{eating:5,depression:1}},
+  {text:{ko:'음식에 대한 생각이 하루의 대부분을 차지한다.',en:'Thoughts about food occupy most of my day.',ja:'食べ物についての考えが一日の大部分を占める。',zh:'关于食物的想法占据了我一天的大部分时间。'},weights:{eating:5,ocd:2}},
+  // NEW: INSOMNIA (5)
+  {text:{ko:'잠들기 어렵거나 자다가 자주 깬다.',en:'I have difficulty falling asleep or wake up frequently during the night.',ja:'寝つきが悪かったり、夜中によく目が覚めたりする。',zh:'我难以入睡或夜间频繁醒来。'},weights:{insomnia:5,anxiety:2}},
+  {text:{ko:'수면 문제로 인해 낮에 집중하거나 기능하기 어렵다.',en:'Sleep problems make it hard to concentrate or function during the day.',ja:'睡眠の問題で昼間に集中したり機能したりすることが難しい。',zh:'睡眠问题让我白天难以集中注意力或正常运作。'},weights:{insomnia:5,burnout:1,depression:1}},
+  {text:{ko:'잠자리에 들면 불안하거나 생각이 너무 많아진다.',en:'When I go to bed, I feel anxious or my mind races with too many thoughts.',ja:'床に就くと不安になったり考えが多すぎたりする。',zh:'当我上床睡觉时，我感到焦虑或思绪纷乱。'},weights:{insomnia:5,anxiety:3,ocd:1}},
+  {text:{ko:'하루 4시간 미만이거나 10시간 이상 자는 경우가 잦다.',en:'I frequently sleep less than 4 hours or more than 10 hours.',ja:'1日4時間未満か10時間以上寝ることが多い。',zh:'我经常睡眠少于4小时或超过10小时。'},weights:{insomnia:4,depression:2,bipolar:2}},
+  {text:{ko:'수면 문제가 한 달 이상 지속되고 있다.',en:'My sleep problems have persisted for more than a month.',ja:'睡眠の問題が一ヶ月以上続いている。',zh:'我的睡眠问题已持续超过一个月。'},weights:{insomnia:5,depression:1}},
+  // NEW: BIPOLAR (5)
+  {text:{ko:'갑자기 에너지가 넘치고 잠이 거의 필요 없어지는 시기가 있다.',en:'There are periods when I suddenly have abundant energy and barely need sleep.',ja:'突然エネルギーが溢れ睡眠がほとんど不要になる時期がある。',zh:'有时候我突然精力充沛，几乎不需要睡眠。'},weights:{bipolar:5,insomnia:1}},
+  {text:{ko:'평소보다 훨씬 빠르게 말하거나 생각이 폭발적으로 쏟아진다.',en:'I speak much faster than usual or have an explosion of racing thoughts.',ja:'普段より遥かに速く話したり考えが爆発的に溢れたりすることがある。',zh:'我说话比平时快得多，或思维爆炸性涌现。'},weights:{bipolar:4,anxiety:1}},
+  {text:{ko:'충동적으로 큰 금액을 쓰거나 위험한 결정을 내린 적이 있다.',en:'I have impulsively spent large amounts of money or made risky decisions.',ja:'衝動的に大金を使ったり危険な決断を下したことがある。',zh:'我曾经冲动地花费大笔金钱或做出危险决定。'},weights:{bipolar:4,sociopathy:1,bpd:1}},
+  {text:{ko:'기분이 아무 이유 없이 극도로 좋아지거나 내가 특별한 존재라고 느낀다.',en:'My mood becomes extremely elevated for no reason or I feel like a special being.',ja:'理由なく気分が極度に良くなったり特別な存在だと感じる。',zh:'我无缘无故地情绪极度高涨，或感觉自己是特殊的存在。'},weights:{bipolar:5,narcissism:1}},
+  {text:{ko:'우울한 시기와 극도로 기분이 좋은 시기가 번갈아 나타난다.',en:'I alternate between periods of deep depression and extreme elation.',ja:'深い抑うつと極度の高揚が交互に現れる。',zh:'我交替出现深度抑郁期和极度高涨期。'},weights:{bipolar:5,depression:1}},
+  // NEW: DISSOCIATION (5)
+  {text:{ko:'현실이 꿈처럼 느껴지거나 내가 나 같지 않은 느낌이 든다.',en:'Reality feels like a dream or I feel like I am not myself.',ja:'現実が夢のように感じられたり、自分が自分でないような感じがする。',zh:'现实感觉像梦一样，或者我感觉自己不像自己。'},weights:{dissociation:5,ptsd:2}},
+  {text:{ko:'한 장소에 있었는데 어떻게 거기 왔는지 기억이 없다.',en:"I find myself somewhere with no memory of how I got there.",ja:'ある場所にいるが、どうやってそこに来たか記憶がない。',zh:'我发现自己在某个地方，却不记得是如何到达那里的。'},weights:{dissociation:5,ptsd:1}},
+  {text:{ko:'내 목소리나 행동이 나의 것이 아닌 것처럼 느껴진다.',en:'My voice or actions feel like they belong to someone else.',ja:'自分の声や行動が自分のものでないように感じる。',zh:'我的声音或行为感觉像是属于别人的。'},weights:{dissociation:5,bpd:1}},
+  {text:{ko:'심한 스트레스 상황에서 나 자신을 잃어버린 것 같은 느낌이 든다.',en:'In highly stressful situations, I feel like I have lost myself.',ja:'ひどいストレス状況で自分を失ったような感じがする。',zh:'在高度压力情况下，我感到失去了自我。'},weights:{dissociation:4,ptsd:2,bpd:1}},
+  {text:{ko:'다른 자아가 있는 것 같고 그 자아가 내 행동을 통제하는 것 같다.',en:'I feel like there is another self that controls my actions.',ja:'別の自我があり、その自我が自分の行動を制御しているように感じる。',zh:'我感觉有另一个自我在控制我的行为。'},weights:{dissociation:5,bpd:2}},
+  // NEW: INTERNET ADDICTION (5)
+  {text:{ko:'인터넷이나 게임을 하지 않으면 불안하고 짜증난다.',en:"I feel anxious and irritable when I can't use the internet or play games.",ja:'インターネットやゲームをしないと不安でイライラする。',zh:'不上网或玩游戏时，我感到焦虑和烦躁。'},weights:{internet_addiction:5,anxiety:2}},
+  {text:{ko:'정해진 시간보다 훨씬 오래 인터넷이나 게임을 한다.',en:'I spend much more time on the internet or gaming than planned.',ja:'予定より遥かに長くインターネットやゲームをする。',zh:'我在网络或游戏上花的时间远比计划的多。'},weights:{internet_addiction:5}},
+  {text:{ko:'인터넷/게임 사용을 줄이려 했지만 번번이 실패한다.',en:'I have repeatedly failed to reduce my internet/gaming use.',ja:'インターネット・ゲーム使用を減らそうとしたが繰り返し失敗した。',zh:'我曾多次试图减少网络/游戏使用，但反复失败。'},weights:{internet_addiction:5}},
+  {text:{ko:'인터넷/게임 때문에 중요한 관계나 학업·업무를 소홀히 한다.',en:'I neglect important relationships, studies, or work because of internet/gaming.',ja:'インターネット・ゲームのために大切な関係や学業・仕事を疎かにする。',zh:'因为网络/游戏，我忽视了重要的关系、学业或工作。'},weights:{internet_addiction:5,sociopathy:1}},
+  {text:{ko:'현실보다 온라인 세계가 더 안전하고 편하다고 느낀다.',en:'The online world feels safer and more comfortable than reality.',ja:'現実よりオンラインの世界の方が安全で楽だと感じる。',zh:'我感觉在线世界比现实更安全、更舒适。'},weights:{internet_addiction:4,social_anxiety:2,depression:1}},
+  // MIXED
+  {text:{ko:'나는 기본적으로 삶에 만족하며 행복하다고 느낀다.',en:'I am basically satisfied with life and feel happy.',ja:'私は基本的に生活に満足し幸せだと感じる。',zh:'我基本上对生活感到满意和幸福。'},weights:{depression:-3,burnout:-2,slump:-2},reverse:true},
+  {text:{ko:'대부분의 사람들은 기본적으로 선하고 믿을 수 있다고 생각한다.',en:'I think most people are basically good and trustworthy.',ja:'ほとんどの人は基本的に善良で信頼できると思う。',zh:'我认为大多数人基本上是善良和可信的。'},weights:{paranoid:-3,psychopathy:-1,sociopathy:-1},reverse:true},
+  {text:{ko:'나는 어려울 때도 의미를 찾고 회복할 수 있는 힘이 있다고 믿는다.',en:'I believe I have strength to find meaning and recover even in difficult times.',ja:'困難なときでも意味を見つけ回復できる力があると信じる。',zh:'我相信即使在困难时期，我也有找到意义和恢复的力量。'},weights:{depression:-2,slump:-3,burnout:-2,ptsd:-1},reverse:true},
+];
+
+/* ================================================================
+   STATE
+================================================================ */
+let S={
+  lang:'ko',theme:'auto',questionCount:null,
+  selectedQs:[],answers:{},curIdx:0,
+  ai:{platform:null,model:null,key:null,enabled:false},
+  results:null,aiDiag:null,aiEval:null,
+};
+
+/* ================================================================
+   THEME
+================================================================ */
+function applyTheme(th){
+  const h=document.documentElement;
+  if(th==='dark') h.setAttribute('data-theme','dark');
+  else if(th==='light') h.removeAttribute('data-theme');
+  else window.matchMedia('(prefers-color-scheme:dark)').matches?h.setAttribute('data-theme','dark'):h.removeAttribute('data-theme');
+}
+function setTheme(th){
+  S.theme=th;applyTheme(th);localStorage.setItem('ms_th',th);
+  document.querySelectorAll('#themeMenu button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('theme-'+th)?.classList.add('active');
+  closeMenus();
+}
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{if(S.theme==='auto')applyTheme('auto')});
+
+/* ================================================================
+   LANGUAGE
+================================================================ */
+const t=k=>(i18n[S.lang]&&i18n[S.lang][k])||i18n.ko[k]||k;
+const cn=(c,f)=>c[{ko:'nameKo',en:'nameEn',ja:'nameJa',zh:'nameZh'}[S.lang]]||c.nameEn;
+const cd=(c)=>c[{ko:'descKo',en:'descEn',ja:'descJa',zh:'descZh'}[S.lang]]||c.descEn;
+const ca=(c)=>c[{ko:'adviceKo',en:'adviceEn',ja:'adviceJa',zh:'adviceZh'}[S.lang]]||c.adviceEn;
+const qtext=(q)=>q.text[S.lang]||q.text.en;
+function setLang(l){
+  S.lang=l;localStorage.setItem('ms_lang',l);
+  document.querySelectorAll('#langMenu button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('lang-'+l)?.classList.add('active');
+  document.documentElement.lang=l;
+  renderI18n();
+  if(document.getElementById('page-home').classList.contains('active'))renderHome();
+  if(document.getElementById('page-test').classList.contains('active'))renderQ();
+  closeMenus();
+}
+function renderI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(i18n[S.lang]&&i18n[S.lang][k]){
+      if(k==='hero_title') el.innerHTML=i18n[S.lang][k];
+      else el.textContent=i18n[S.lang][k];
+    }
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-ph');
+    if(i18n[S.lang]&&i18n[S.lang][k]) el.placeholder=i18n[S.lang][k];
+  });
+}
+
+/* ================================================================
+   MENUS
+================================================================ */
+function closeMenus(){
+  document.getElementById('langMenu').classList.remove('open');
+  document.getElementById('themeMenu').classList.remove('open');
+}
+document.getElementById('langBtn').addEventListener('click',e=>{e.stopPropagation();document.getElementById('langMenu').classList.toggle('open');document.getElementById('themeMenu').classList.remove('open')});
+document.getElementById('themeBtn').addEventListener('click',e=>{e.stopPropagation();document.getElementById('themeMenu').classList.toggle('open');document.getElementById('langMenu').classList.remove('open')});
+document.addEventListener('click',closeMenus);
+
+/* ================================================================
+   HOME
+================================================================ */
+function renderHome(){
+  const mins=[1,2,3,4,5,6,8,10,13,15];
+  const g=document.getElementById('cntGrid');g.innerHTML='';
+  for(let i=1;i<=10;i++){
+    const n=i*10;
+    const b=document.createElement('button');
+    b.className='cnt-btn'+(S.questionCount===n?' sel':'');
+    b.id='cb-'+n;b.onclick=()=>selCount(n);
+    b.innerHTML=`${n}<span>~${mins[i-1]}${t('min_est')}</span>`;
+    g.appendChild(b);
+  }
+  const fg=document.getElementById('featGrid');fg.innerHTML='';
+  CATS.forEach(c=>{
+    const d=document.createElement('div');d.className='feat-card';
+    d.innerHTML=`<div class="icon">${c.icon}</div><h3>${cn(c)}</h3><p>${cd(c).slice(0,65)}...</p>`;
+    fg.appendChild(d);
+  });
+}
+function selCount(n){
+  S.questionCount=n;
+  document.querySelectorAll('.cnt-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('cb-'+n)?.classList.add('sel');
+  document.getElementById('startBtn').disabled=false;
+}
+
+/* ================================================================
+   PAGES
+================================================================ */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goHome(){S.questionCount=null;S.selectedQs=[];S.answers={};S.curIdx=0;S.results=null;S.aiDiag=null;S.aiEval=null;showPage('home');renderHome();}
+
+/* ================================================================
+   AI SETUP PAGE
+================================================================ */
+let selPlatform=null;
+function goToAiSetup(){
+  renderAISetup();
+  showPage('ai-setup');
+}
+function renderAISetup(){
+  const g=document.getElementById('platGrid');g.innerHTML='';
+  Object.entries(AI_PLATFORMS).forEach(([id,p])=>{
+    const b=document.createElement('button');
+    b.className='plat-btn'+(selPlatform===id?' active':'');
+    b.onclick=()=>selectPlatform(id);
+    b.innerHTML=`<span class="plat-icon">${p.icon}</span><span class="plat-name">${p.name}</span><span class="plat-free">${p.free?'✓ Free tier':t('ai_paid')||'Paid'}</span>`;
+    g.appendChild(b);
+  });
+}
+function selectPlatform(id){
+  selPlatform=id;
+  document.querySelectorAll('.plat-btn').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const p=AI_PLATFORMS[id];
+  document.getElementById('keySection').classList.remove('hidden-section');
+  const ms=document.getElementById('modelSection');
+  ms.classList.remove('hidden-section');
+  const sel=document.getElementById('modelSel');
+  sel.innerHTML=p.models.map(m=>`<option value="${m.id}">${m.name} — ${m.desc||''}</option>`).join('');
+  onModelChange();
+}
+function onModelChange(){
+  const sid=document.getElementById('modelSel').value;
+  if(!selPlatform)return;
+  const m=AI_PLATFORMS[selPlatform].models.find(x=>x.id===sid);
+  document.getElementById('modelDesc').textContent=m?m.desc:'';
+}
+function toggleVis(){
+  const inp=document.getElementById('apiKeyInp');
+  inp.type=inp.type==='password'?'text':'password';
+  document.getElementById('visBtn').textContent=inp.type==='password'?'👁':'🙈';
+}
+function showKeyGuide(){
+  if(!selPlatform)return;
+  const p=AI_PLATFORMS[selPlatform];
+  const steps=p.guide[S.lang]||p.guide.en;
+  document.getElementById('modalTitle').textContent=t('guide_title')+' — '+p.name;
+  document.getElementById('guideSteps').innerHTML=steps.map((s,i)=>`<div class="guide-step"><p>${i+1}. ${s}</p></div>`).join('');
+  document.getElementById('modalOv').classList.add('open');
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modalOv'))
+    document.getElementById('modalOv').classList.remove('open');
+}
+function skipAI(){
+  S.ai={platform:null,model:null,key:null,enabled:false};
+  document.getElementById('aiBadge').classList.remove('on');
+  startActualTest();
+}
+function confirmAI(){
+  if(!selPlatform){alert(t('ai_plat_title')+' 선택 필요');return;}
+  const key=document.getElementById('apiKeyInp').value.trim();
+  if(!key){alert(t('ai_key_ph'));return;}
+  const model=document.getElementById('modelSel').value;
+  S.ai={platform:selPlatform,model,key,enabled:true};
+  sessionStorage.setItem('ms_ai_plat',selPlatform);
+  sessionStorage.setItem('ms_ai_model',model);
+  document.getElementById('aiBadge').classList.add('on');
+  document.getElementById('aiBadgeTxt').textContent=AI_PLATFORMS[selPlatform].name.split(' ')[0];
+  startActualTest();
+}
+
+/* ================================================================
+   TEST
+================================================================ */
+function startActualTest(){
+  const shuffled=[...ALL_QUESTIONS].sort(()=>Math.random()-.5);
+  S.selectedQs=shuffled.slice(0,S.questionCount);
+  S.answers={};S.curIdx=0;
+  showPage('test');renderQ();
+}
+function renderQ(){
+  const q=S.selectedQs[S.curIdx];
+  const total=S.selectedQs.length;
+  const pct=Math.round((S.curIdx/total)*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progTxt').textContent=`${t('progress_q')} ${S.curIdx+1} / ${total}`;
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('qNum').textContent=`Q${S.curIdx+1}`;
+  document.getElementById('qText').textContent=qtext(q);
+  const labels=[t('sc1'),t('sc2'),t('sc3'),t('sc4'),t('sc5')];
+  const lk=document.getElementById('likert');lk.innerHTML='';
+  for(let v=1;v<=5;v++){
+    const b=document.createElement('button');
+    b.className='lk-btn'+(S.answers[S.curIdx]===v?' sel':'');
+    b.textContent=labels[v-1];
+    b.onclick=()=>selAns(v);
+    lk.appendChild(b);
+  }
+  document.getElementById('prevBtn').disabled=S.curIdx===0;
+  const isLast=S.curIdx===total-1;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=S.answers[S.curIdx]===undefined;
+  document.getElementById('nextTxt').textContent=isLast?t('submit'):t('next');
+}
+function selAns(v){
+  S.answers[S.curIdx]=v;
+  document.querySelectorAll('.lk-btn').forEach((b,i)=>b.classList.toggle('sel',i===v-1));
+  document.getElementById('nextBtn').disabled=false;
+}
+function nextQ(){
+  if(S.answers[S.curIdx]===undefined)return;
+  if(S.curIdx===S.selectedQs.length-1) computeResults();
+  else{S.curIdx++;renderQ();}
+}
+function prevQ(){if(S.curIdx>0){S.curIdx--;renderQ();}}
+function retake(){
+  S.answers={};S.curIdx=0;S.aiDiag=null;S.aiEval=null;
+  const shuffled=[...ALL_QUESTIONS].sort(()=>Math.random()-.5);
+  S.selectedQs=shuffled.slice(0,S.questionCount);
+  showPage('test');renderQ();
+}
+
+/* ================================================================
+   RESULTS COMPUTATION
+================================================================ */
+function getGrade(pct){
+  if(pct>=85)return'critical';if(pct>=75)return'danger';
+  if(pct>=50)return'caution';if(pct>=30)return'watch';return'good';
+}
+function getGradeLabel(g){return t('grade_'+g);}
+
+function computeResults(){
+  const lov=document.getElementById('loadOv');
+  document.getElementById('loadTxt').textContent=t('analyzing');
+  lov.classList.remove('hidden');
+  setTimeout(()=>{
+    const scores={};
+    CATS.forEach(c=>{scores[c.id]={raw:0,max:0}});
+    S.selectedQs.forEach((q,idx)=>{
+      const ans=S.answers[idx];if(ans===undefined)return;
+      Object.entries(q.weights).forEach(([cid,w])=>{
+        if(!w)return;
+        const aw=Math.abs(w);
+        const adj=w<0?(6-ans)*aw:ans*aw;
+        const mx=5*aw;
+        if(!scores[cid])scores[cid]={raw:0,max:0};
+        scores[cid].raw+=adj;scores[cid].max+=mx;
+      });
+    });
+    const results=CATS.map(c=>{
+      const s=scores[c.id];
+      const pct=s.max>0?Math.round((s.raw/s.max)*100):0;
+      return{cat:c,pct};
+    }).sort((a,b)=>b.pct-a.pct);
+    S.results=results;
+    lov.classList.add('hidden');
+    renderResults(results);
+    showPage('results');
+    if(S.ai.enabled) triggerAIDiag(results);
+  },1400);
+}
+
+function renderResults(results){
+  // Crisis check
+  const suicideR=results.find(r=>r.cat.id==='suicide');
+  const selfHarmR=results.find(r=>r.cat.id==='self_harm');
+  const cb=document.getElementById('crisisBox');
+  if((suicideR&&suicideR.pct>=30)||(selfHarmR&&selfHarmR.pct>=50)){
+    cb.style.display='block';
+  } else cb.style.display='none';
+
+  // Tabs
+  const tb=document.getElementById('tabBar');
+  tb.style.display=S.ai.enabled?'block':'none';
+
+  // Numeric tab
+  const cont=document.getElementById('resCont');cont.innerHTML='';
+  const grades=['critical','danger','caution','watch','good'];
+  const glabels={critical:t('grade_critical'),danger:t('grade_danger'),caution:t('grade_caution'),watch:t('grade_watch'),good:t('grade_good')};
+  grades.forEach(grade=>{
+    const items=results.filter(r=>getGrade(r.pct)===grade);
+    if(!items.length)return;
+    const grp=document.createElement('div');grp.className='grade-grp';
+    grp.innerHTML=`<div class="grade-hdr"><div class="grade-badge g-${grade}"><div class="bdot"></div>${glabels[grade]}</div><div class="grade-line"></div></div><div class="res-items" id="rg-${grade}"></div>`;
+    cont.appendChild(grp);
+    const rit=document.getElementById('rg-'+grade);
+    items.forEach(({cat,pct})=>{
+      const item=document.createElement('div');
+      item.className=`res-item ri-${grade}`;
+      item.innerHTML=`<div class="ri-row"><span style="font-size:1.2rem">${cat.icon}</span><span class="ri-name">${cn(cat)}</span><span class="ri-pct">${pct}%</span><span class="exp-icon">▼</span></div><div class="ri-bar"><div class="ri-fill" style="width:0%" data-t="${pct}"></div></div><div class="ri-expand" id="re-${cat.id}"><p>${cd(cat)}</p><div class="advice">💡 ${ca(cat)}</div></div>`;
+      item.addEventListener('click',()=>toggleExpand(item,cat.id));
+      rit.appendChild(item);
+    });
+  });
+  setTimeout(()=>document.querySelectorAll('.ri-fill').forEach(f=>f.style.width=f.dataset.t+'%'),80);
+  // AI eval section
+  const aes=document.getElementById('aiEvalSection');
+  aes.style.display=S.ai.enabled?'block':'none';
+}
+
+function toggleExpand(item,catId){
+  const ex=document.getElementById('re-'+catId);
+  const wasOpen=ex.classList.contains('open');
+  document.querySelectorAll('.ri-expand').forEach(e=>e.classList.remove('open'));
+  document.querySelectorAll('.res-item').forEach(i=>i.classList.remove('expanded'));
+  if(!wasOpen){ex.classList.add('open');item.classList.add('expanded');}
+}
+
+/* ================================================================
+   TABS
+================================================================ */
+function switchTab(name){
+  ['numeric','ai'].forEach(n=>{
+    document.getElementById('tab-'+n)?.classList.toggle('active',n===name);
+    document.getElementById('tc-'+n)?.classList.toggle('active',n===name);
+  });
+}
+
+/* ================================================================
+   AI API CALL
+================================================================ */
+function buildScoreText(results){
+  return results.map(r=>`${cn(r.cat)}: ${r.pct}% (${getGradeLabel(getGrade(r.pct))})`).join('\n');
+}
+function getLangInstruction(){
+  const m={ko:'한국어로 답변하세요.',en:'Please respond in English.',ja:'日本語で回答してください。',zh:'请用中文回答。'};
+  return m[S.lang]||m.ko;
+}
+async function callAI(messages){
+  const p=AI_PLATFORMS[S.ai.platform];
+  return await p.call(S.ai.key,S.ai.model,messages);
+}
+function md2html(text){
+  return text
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^### (.+)$/gm,'<h4>$1</h4>')
+    .replace(/^## (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^# (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n/g,'<br>');
+}
+
+async function triggerAIDiag(results){
+  const cont=document.getElementById('aiDiagCont');
+  document.getElementById('aiLoading').style.display='flex';
+  const scoreText=buildScoreText(results);
+  const sysPrompt=`You are a compassionate mental health analysis assistant. Analyze self-report psychological test results empathetically. IMPORTANT: This is NOT a clinical diagnosis — always remind the user. ${getLangInstruction()}`;
+  const userPrompt=`다음은 심리 자가 검사 결과입니다 (총 ${S.selectedQs.length}문항):\n\n${scoreText}\n\n⚠️ 이는 자기 보고식 참고 검사이며 임상 진단이 아닙니다.\n\n다음을 제공해주세요:\n1. 주목할 만한 높은 수치 항목들의 간략한 분석 (각 2-3문장)\n2. 전체적인 심리 패턴 요약\n3. 즉시 주의가 필요한 사항이 있다면 언급\n\n따뜻하고 비판단적인 톤으로 작성해주세요. (${getLangInstruction()})`;
+  try{
+    const resp=await callAI([{role:'system',content:sysPrompt},{role:'user',content:userPrompt}]);
+    S.aiDiag=resp;
+    cont.innerHTML=`<div class="ai-result-card"><h3>🧠 ${t('ai_diag_title')}</h3><div class="ai-content">${md2html(resp)}</div></div>`;
+  }catch(e){
+    cont.innerHTML=`<div class="ai-result-card"><p style="color:var(--ec)">${t('ai_error')}${e.message}</p></div>`;
+  }
+  document.getElementById('aiLoading').style.display='none';
+}
+
+async function requestAIEval(){
+  if(!S.ai.enabled){alert(t('ai_not_configured'));return;}
+  const btn=document.getElementById('aiEvalBtn');
+  btn.disabled=true;
+  btn.innerHTML=`<div class="ai-spinner" style="width:20px;height:20px;border-width:3px"></div> ${t('ai_eval_loading')}`;
+  const scoreText=buildScoreText(S.results);
+  const diagText=S.aiDiag?`\n\n이전 AI 분석:\n${S.aiDiag}`:'';
+  const sysPrompt=`You are a compassionate mental health advisor providing detailed, practical improvement guidance based on psychological assessment scores. ${getLangInstruction()}`;
+  const userPrompt=`수치 기반 결과:\n${scoreText}${diagText}\n\n위 결과를 바탕으로 다음을 상세히 작성해주세요:\n\n1. **가장 시급한 관리 영역** (상위 3-4개) 각각에 대한 구체적인 개선 방법\n2. **일상 실천 루틴** — 바로 시작할 수 있는 5가지 이상의 구체적인 습관\n3. **주의해야 할 경고 신호** — 즉시 전문가를 찾아야 할 신호들\n4. **도움이 될 전문 치료법** (예: CBT, DBT, EMDR, ACT 등) 간략한 설명과 함께\n5. **희망적인 메시지** — 회복 가능성과 격려\n\n구체적이고 실용적으로, 따뜻하고 희망적인 톤으로 작성해주세요. (${getLangInstruction()})`;
+  try{
+    const resp=await callAI([{role:'system',content:sysPrompt},{role:'user',content:userPrompt}]);
+    S.aiEval=resp;
+    document.getElementById('aiEvalContent').innerHTML=md2html(resp);
+    const er=document.getElementById('aiEvalResult');er.classList.add('show');
+    if(!document.getElementById('tc-ai').classList.contains('active')) switchTab('ai');
+  }catch(e){
+    document.getElementById('aiEvalContent').innerHTML=`<p style="color:var(--ec)">${t('ai_error')}${e.message}</p>`;
+    document.getElementById('aiEvalResult').classList.add('show');
+  }
+  btn.disabled=false;
+  btn.innerHTML=`✨ <span>${t('ai_eval_btn')}</span>`;
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+function init(){
+  const sl=localStorage.getItem('ms_lang')||'ko';
+  const st=localStorage.getItem('ms_th')||'auto';
+  S.lang=sl;S.theme=st;
+  document.querySelectorAll('#langMenu button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('lang-'+sl)?.classList.add('active');
+  document.querySelectorAll('#themeMenu button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('theme-'+st)?.classList.add('active');
+  applyTheme(st);renderI18n();renderHome();
+  setTimeout(()=>document.getElementById('loadOv').classList.add('hidden'),500);
+}
+init();
+</script>
+</body>
+</html>
