@@ -574,10 +574,14 @@ const AI_PLATFORMS={
     name:'Google AI Studio',icon:'🔵',free:true,
     keyUrl:'https://aistudio.google.com/apikey',
     models:[
-      {id:'gemini-2.0-flash-lite',name:'Gemini 2.0 Flash Lite',desc:'빠르고 경제적'},
-      {id:'gemini-2.0-flash',name:'Gemini 2.0 Flash',desc:'균형 잡힌 성능'},
-      {id:'gemini-1.5-flash',name:'Gemini 1.5 Flash',desc:'안정적'},
-      {id:'gemini-1.5-pro',name:'Gemini 1.5 Pro',desc:'높은 정확도'},
+      {id:'gemini-3.5-flash',name:'Gemini 3.5 Flash',desc:'최신 안정형 Flash'},
+      {id:'gemini-3.1-pro-preview',name:'Gemini 3.1 Pro Preview',desc:'최고 지능/코딩'},
+      {id:'gemini-3-flash-preview',name:'Gemini 3 Flash Preview',desc:'빠른 최신 성능'},
+      {id:'gemini-3.1-flash-lite',name:'Gemini 3.1 Flash-Lite',desc:'빠르고 경제적'},
+      {id:'gemini-2.5-pro',name:'Gemini 2.5 Pro',desc:'고급 추론'},
+      {id:'gemini-2.5-flash',name:'Gemini 2.5 Flash',desc:'균형 잡힌 성능'},
+      {id:'gemini-2.5-flash-lite',name:'Gemini 2.5 Flash-Lite',desc:'저비용/고속'},
+
     ],
     guide:{
       ko:['Google AI Studio(<a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a>)에 접속하세요.','Google 계정으로 로그인하세요.','왼쪽 메뉴에서 "Get API key"를 클릭하세요.','"Create API key"를 눌러 새 키를 생성하세요.','생성된 키를 복사해 위에 붙여넣으세요.'],
@@ -598,10 +602,16 @@ const AI_PLATFORMS={
     name:'Groq',icon:'⚡',free:true,
     keyUrl:'https://console.groq.com/keys',
     models:[
-      {id:'llama-3.3-70b-versatile',name:'Llama 3.3 70B',desc:'최고 성능'},
-      {id:'llama-3.1-8b-instant',name:'Llama 3.1 8B (Fast)',desc:'매우 빠름'},
-      {id:'gemma2-9b-it',name:'Gemma 2 9B',desc:'균형'},
-      {id:'mixtral-8x7b-32768',name:'Mixtral 8x7B',desc:'긴 컨텍스트'},
+      {id:'openai/gpt-oss-120b',name:'GPT-OSS 120B',desc:'최신 오픈 모델'},
+      {id:'openai/gpt-oss-20b',name:'GPT-OSS 20B',desc:'빠르고 경제적'},
+      {id:'llama-3.3-70b-versatile',name:'Llama 3.3 70B',desc:'강력한 범용 모델'},
+      {id:'llama-3.1-8b-instant',name:'Llama 3.1 8B Instant',desc:'매우 빠름'},
+      {id:'meta-llama/llama-4-scout-17b-16e-instruct',name:'Llama 4 Scout 17B 16E',desc:'최신 Llama 4 Preview'},
+      {id:'qwen/qwen3.6-27b',name:'Qwen3.6 27B',desc:'최신 Qwen Preview'},
+      {id:'qwen/qwen3-32b',name:'Qwen3 32B',desc:'추론/코딩'},
+      {id:'groq/compound',name:'Groq Compound',desc:'도구 사용 시스템'},
+      {id:'groq/compound-mini',name:'Groq Compound Mini',desc:'빠른 도구 사용'},
+
     ],
     guide:{
       ko:['Groq Console(<a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>)에 접속하세요.','계정을 만들거나 로그인하세요.','"API Keys" 메뉴에서 "Create API Key"를 클릭하세요.','생성된 키를 복사해 위에 붙여넣으세요.'],
@@ -620,10 +630,13 @@ const AI_PLATFORMS={
     name:'OpenAI',icon:'🤖',free:false,
     keyUrl:'https://platform.openai.com/api-keys',
     models:[
-      {id:'gpt-4o-mini',name:'GPT-4o Mini',desc:'빠르고 경제적'},
-      {id:'gpt-4o',name:'GPT-4o',desc:'최고 성능'},
-      {id:'gpt-4-turbo',name:'GPT-4 Turbo',desc:'고성능'},
-      {id:'gpt-3.5-turbo',name:'GPT-3.5 Turbo',desc:'경제적'},
+      {id:'gpt-5.5',name:'GPT-5.5',desc:'최고 성능'},
+      {id:'gpt-5.4',name:'GPT-5.4',desc:'고성능'},
+      {id:'gpt-5.4-mini',name:'GPT-5.4 Mini',desc:'빠르고 경제적'},
+      {id:'gpt-5.4-nano',name:'GPT-5.4 Nano',desc:'최저 지연/비용'},
+      {id:'gpt-4.1',name:'GPT-4.1',desc:'안정적 범용'},
+      {id:'gpt-4.1-mini',name:'GPT-4.1 Mini',desc:'경량 범용'},
+
     ],
     guide:{
       ko:['OpenAI Platform(<a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>)에 접속하세요.','로그인 후 "API keys" 메뉴로 이동하세요.','"Create new secret key"를 클릭하세요.','생성된 키를 복사해 위에 붙여넣으세요. (한 번만 표시됩니다!)','⚠️ 유료 API입니다. 크레딧이 필요합니다.'],
@@ -632,19 +645,23 @@ const AI_PLATFORMS={
       zh:['访问OpenAI Platform(<a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>)。','导航到"API keys"部分。','点击"Create new secret key"。','复制密钥并粘贴（仅显示一次！）','⚠️ 付费API，需要额度。'],
     },
     async call(key,model,msgs){
-      const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model,messages:msgs,temperature:.75,max_tokens:2048})});
+      const input=msgs.map(m=>({role:m.role,content:m.content}));
+      const r=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model,input,max_output_tokens:2048})});
       const d=await r.json();
       if(!r.ok)throw new Error(d.error?.message||'OpenAI Error');
-      return d.choices[0].message.content;
+      if(d.output_text)return d.output_text;
+      return (d.output||[]).flatMap(o=>o.content||[]).map(c=>c.text||'').join('').trim();
     }
   },
   anthropic:{
     name:'Anthropic Claude',icon:'🌟',free:false,
     keyUrl:'https://console.anthropic.com/settings/keys',
     models:[
-      {id:'claude-haiku-3-5-latest',name:'Claude 3.5 Haiku',desc:'빠르고 경제적'},
-      {id:'claude-sonnet-4-5',name:'Claude Sonnet 4.5',desc:'균형 잡힌 성능'},
-      {id:'claude-opus-4-5',name:'Claude Opus 4.5',desc:'최고 지능'},
+      {id:'claude-fable-5',name:'Claude Fable 5',desc:'최신 최고 성능'},
+      {id:'claude-opus-4-8',name:'Claude Opus 4.8',desc:'고급 추론/코딩'},
+      {id:'claude-sonnet-4-6',name:'Claude Sonnet 4.6',desc:'균형 잡힌 성능'},
+      {id:'claude-haiku-4-5',name:'Claude Haiku 4.5',desc:'빠르고 경제적'},
+
     ],
     guide:{
       ko:['Anthropic Console(<a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>)에 접속하세요.','계정을 만들거나 로그인하세요.','"Settings > API Keys"에서 "Create Key"를 클릭하세요.','생성된 키를 복사해 위에 붙여넣으세요.','⚠️ 유료 API입니다. 크레딧이 필요합니다.'],
