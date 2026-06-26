@@ -591,7 +591,7 @@ const AI_PLATFORMS={
     },
     async call(key,model,msgs){
       const url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-      const body={contents:msgs.map(m=>({role:m.role==='assistant'?'model':m.role,parts:[{text:m.content}]})),generationConfig:{temperature:.75,maxOutputTokens:2048}};
+      const body={contents:msgs.map(m=>({role:m.role==='assistant'?'model':m.role,parts:[{text:m.content}]})),generationConfig:{temperature:.75,maxOutputTokens:65536}};
       const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
       if(!r.ok)throw new Error(d.error?.message||'Google AI Error');
